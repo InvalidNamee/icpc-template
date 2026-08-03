@@ -1,0 +1,243 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{theme/icpcbook}[2026/08/03 Modular ICPC notebook theme]
+
+\PassOptionsToPackage{AutoFakeBold,AutoFakeSlant}{xeCJK}
+\RequirePackage[UTF8,scheme=plain,fontset=fandol,heading=false]{ctex}
+\RequirePackage{newpxtext}
+\RequirePackage[scaled=0.88]{sourcesans}
+\RequirePackage[scaled=0.84]{sourcecodepro}
+\RequirePackage{geometry}
+\RequirePackage{xcolor}
+\RequirePackage{microtype}
+\RequirePackage{multicol}
+\RequirePackage{fancyhdr}
+\RequirePackage{titlesec}
+\RequirePackage{tocloft}
+\RequirePackage{enumitem}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{mathtools}
+\RequirePackage{newpxmath}
+\RequirePackage{booktabs}
+\RequirePackage{tabularx}
+\RequirePackage{needspace}
+\RequirePackage{xparse}
+\RequirePackage[most]{tcolorbox}
+\tcbuselibrary{minted}
+\RequirePackage{hyperref}
+\RequirePackage{bookmark}
+
+% ---- Palette: restrained enough for grayscale printing. ----
+\definecolor{ICPCInk}{HTML}{24313A}
+\definecolor{ICPCBlue}{HTML}{466B82}
+\definecolor{ICPCBlueDark}{HTML}{2E5065}
+\definecolor{ICPCBlueMid}{HTML}{90A9B8}
+\definecolor{ICPCBlueLight}{HTML}{E9F0F4}
+\definecolor{ICPCCodeBack}{HTML}{F6F8FA}
+\definecolor{ICPCGray}{HTML}{66737B}
+\definecolor{ICPCLine}{HTML}{CBD6DC}
+
+\color{ICPCInk}
+\geometry{
+  a4paper,
+  portrait,
+  top=14mm,
+  bottom=14mm,
+  left=12mm,
+  right=12mm,
+  headheight=17pt,
+  headsep=3mm,
+  footskip=5mm,
+  columnsep=7mm
+}
+
+\setlength{\columnseprule}{0.25pt}
+\def\columnseprulecolor{\color{ICPCLine}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.28em plus 0.08em minus 0.04em}
+\raggedbottom
+\emergencystretch=1.5em
+\linespread{0.98}
+
+\setlist{nosep,leftmargin=1.4em,labelsep=0.45em}
+\setlist[itemize,1]{label=\textcolor{ICPCBlue}{\scriptsize\textbullet}}
+\setlist[enumerate,1]{label=\textcolor{ICPCBlueDark}{\arabic*.}}
+
+% ---- Page header. ----
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\sffamily\color{ICPCGray}\ICPCUniversity{} · \ICPCTeam}
+\fancyhead[R]{\footnotesize\sffamily\color{ICPCGray}\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\makeatletter
+\renewcommand{\headrule}{\hbox to\headwidth{\color{ICPCLine}\leaders\hrule height \headrulewidth\hfill}}
+\makeatother
+
+% ---- Section hierarchy. ----
+\titleformat{\section}
+  {\needspace{5\baselineskip}\Large\sffamily\bfseries\color{ICPCBlueDark}}
+  {\textcolor{ICPCBlue}{\thesection}}
+  {0.55em}
+  {}
+\titlespacing*{\section}{0pt}{1.15em}{0.55em}
+
+\titleformat{\subsection}
+  {\needspace{4\baselineskip}\large\sffamily\bfseries\color{ICPCInk}}
+  {\textcolor{ICPCBlue}{\thesubsection}}
+  {0.5em}
+  {}
+\titlespacing*{\subsection}{0pt}{0.9em}{0.38em}
+
+\titleformat{\subsubsection}
+  {\needspace{3\baselineskip}\normalsize\sffamily\bfseries\color{ICPCBlueDark}}
+  {\thesubsubsection}
+  {0.45em}
+  {}
+\titlespacing*{\subsubsection}{0pt}{0.7em}{0.25em}
+
+% ---- Table of contents. ----
+\setcounter{tocdepth}{2}
+\renewcommand{\contentsname}{目录}
+\renewcommand{\cfttoctitlefont}{\Large\sffamily\bfseries\color{ICPCBlueDark}}
+\renewcommand{\cftsecfont}{\sffamily\bfseries\color{ICPCBlueDark}}
+\renewcommand{\cftsecpagefont}{\sffamily\bfseries\color{ICPCBlueDark}}
+\renewcommand{\cftsubsecfont}{\small\sffamily\color{ICPCInk}}
+\renewcommand{\cftsubsecpagefont}{\small\sffamily\color{ICPCGray}}
+\setlength{\cftbeforesecskip}{0.28em}
+\setlength{\cftbeforesubsecskip}{0.05em}
+\setlength{\cftsecindent}{0pt}
+\setlength{\cftsubsecindent}{1.2em}
+\setlength{\cftsubsecnumwidth}{2.4em}
+
+% ---- Links. ----
+\hypersetup{
+  unicode=true,
+  colorlinks=true,
+  linkcolor=ICPCBlueDark,
+  urlcolor=ICPCBlue,
+  citecolor=ICPCBlueDark,
+  pdfauthor={\ICPCUniversity{} - \ICPCTeam},
+  pdftitle={\ICPCTitle}
+}
+
+% ---- Front matter. ----
+\NewDocumentCommand{\ICPCMakeTitle}{}{%
+  \begin{minipage}{\textwidth}
+    \centering
+    {\color{ICPCBlueDark}\rule{\textwidth}{1.1pt}}\par
+    \vspace{0.65em}
+    {\fontsize{22}{25}\selectfont\sffamily\bfseries\color{ICPCBlueDark}\ICPCTitle\par}
+    \vspace{0.25em}
+    {\large\sffamily\color{ICPCBlue}\ICPCSubtitle\par}
+    \vspace{0.65em}
+    {\small\sffamily\color{ICPCGray}\ICPCUniversity{} · \ICPCTeam{} · \ICPCMembers\par}
+    \vspace{0.35em}
+    {\footnotesize\sffamily\color{ICPCGray}构建日期：\number\year 年 \number\month 月 \number\day 日\par}
+    \vspace{0.6em}
+    {\color{ICPCLine}\rule{\textwidth}{0.5pt}}
+  \end{minipage}
+  \vspace{0.8em}
+}
+
+% ---- Semantic content boxes. ----
+\tcbset{
+  icpc base/.style={
+    enhanced,
+    breakable,
+    colback=white,
+    colbacktitle=white,
+    boxrule=0.35pt,
+    arc=1.2mm,
+    outer arc=1.2mm,
+    left=1.3mm,
+    right=1.3mm,
+    top=1mm,
+    bottom=1mm,
+    before skip=0.45em,
+    after skip=0.45em,
+    fonttitle=\small\sffamily\bfseries,
+    titlerule=0.3pt
+  }
+}
+
+\newtcolorbox{icpcresult}[1][结论]{
+  icpc base,
+  title={#1},
+  colframe=ICPCBlueMid,
+  coltitle=ICPCBlueDark
+}
+
+\newtcolorbox{icpcwarning}[1][易错点]{
+  icpc base,
+  title={#1},
+  colframe=ICPCBlue,
+  coltitle=ICPCBlueDark
+}
+
+\newtcolorbox{icpcnote}[1][补充]{
+  icpc base,
+  title={#1},
+  colframe=ICPCLine,
+  coltitle=ICPCBlueDark
+}
+
+% ---- Module assembly. The directory is scoped to one include. ----
+\NewDocumentCommand{\ICPCIncludeModule}{m}{%
+  \begingroup
+  \def\ICPCModuleDir{#1}%
+  \input{#1/module.tex}%
+  \endgroup
+}
+
+\NewDocumentCommand{\ICPCModule}{m}{\subsection{#1}}
+\NewDocumentCommand{\ICPCMeta}{m m}{%
+  \noindent{\small\sffamily\bfseries\color{ICPCBlueDark}#1：}%
+  {\small #2}\par
+}
+\NewDocumentCommand{\ICPCNote}{O{note.tex}}{\input{\ICPCModuleDir/#1}}
+
+\newcommand{\ICPCCodeFont}{\fontsize{8pt}{9.2pt}\selectfont}
+
+\tcbset{
+  icpc code/.style={
+    enhanced,
+    breakable,
+    listing only,
+    listing engine=minted,
+    minted language=cpp,
+    minted style=friendly,
+    minted options={
+      fontsize=\ICPCCodeFont,
+      breaklines,
+      breakanywhere,
+      autogobble,
+      tabsize=2,
+      encoding=utf8
+    },
+    colback=white,
+    colframe=ICPCBlueMid,
+    colbacktitle=white,
+    coltitle=ICPCBlueDark,
+    fonttitle=\small\sffamily\bfseries,
+    boxrule=0.45pt,
+    arc=1.1mm,
+    outer arc=1.1mm,
+    boxsep=0.6mm,
+    left=0.8mm,
+    right=0.8mm,
+    top=1mm,
+    bottom=1mm,
+    before skip=0.5em,
+    after skip=0.55em
+  }
+}
+
+\NewDocumentCommand{\ICPCCode}{O{C++ 实现} m}{%
+  \tcbinputlisting{
+    icpc code,
+    title={#1},
+    title after break={#1（续）},
+    listing file={\ICPCModuleDir/#2}
+  }%
+}

@@ -1,0 +1,32 @@
+记 $d=\gcd(a,m)$。
+线性同余方程
+\[
+  ax\equiv b\pmod m
+\]
+有解当且仅当 $d\mid b$。
+若有解，约去 $d$ 后可在模 $m/d$ 下求逆元，并得到模 $m/d$ 意义下的唯一解。
+
+\begin{icpcresult}[逆元存在条件]
+  $a$ 在模 $m$ 下存在乘法逆元，当且仅当 $\gcd(a,m)=1$。
+  扩展欧几里得给出
+  \[
+    ax+my=1,
+  \]
+  此时 $x\bmod m$ 即为 $a^{-1}$。
+\end{icpcresult}
+
+若模数 $m_1,\ldots,m_k$ 两两互质，令
+\[
+  M=\prod_{i=1}^{k}m_i,\qquad M_i=\frac{M}{m_i},
+\]
+则同余方程组 $x\equiv a_i\pmod{m_i}$ 的解为
+\[
+  x\equiv \sum_{i=1}^{k}a_iM_i
+  \left(M_i^{-1}\bmod m_i\right)\pmod M.
+\]
+
+\begin{icpcwarning}[实现细节]
+  合并同余方程时，中间乘法可能先于取模溢出。
+  根据范围使用 \texttt{\_\_int128}、快速乘或任意精度整数。
+  C++ 的负数取余可能为负，统一规范化为 $[0,m)$。
+\end{icpcwarning}
