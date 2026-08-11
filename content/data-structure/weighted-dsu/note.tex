@@ -1,0 +1,16 @@
+令 \(dis[x]=value[x]-value[fa[x]]\)。
+路径压缩时，记原父节点为 \(p=fa[x]\)。先递归更新 \(p\)，再令
+\[
+  dis[x]\gets dis[x]+dis[p],\qquad fa[x]\gets fa[p].
+\]
+压缩完成后，\(dis[x]\) 表示 \(x\) 到所在集合根的差值。
+
+合并约束 \(value[y]-value[x]=w\) 时，若把 \(y\) 的根接到 \(x\) 的根，需要设置
+\[
+  dis[root_y]=w+dis[x]-dis[y].
+\]
+
+\begin{icpcwarning}[符号约定]
+  \texttt{merge(x, y, w)} 和 \texttt{query(x, y)} 的方向均为
+  \(value[y]-value[x]\)。查询前必须保证两点已经连通。
+\end{icpcwarning}
