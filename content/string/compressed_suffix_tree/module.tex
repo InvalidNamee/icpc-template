@@ -1,0 +1,6 @@
+\ICPCModule{压缩后缀树}
+\ICPCMeta{适用条件}{把全部后缀的压缩 Trie 显式建成树，处理子串、出现位置与树上 DP。}
+\ICPCMeta{复杂度}{依赖 SA；建树 $O(n)$，结点数不超过 $2n$。}
+\ICPCMeta{默认约定}{字符串、模式串、后缀起点和区间均为 $1$ 下标。}
+\ICPCNote
+\ICPCCode[由 SA + height 构造压缩后缀树]{code.hpp}

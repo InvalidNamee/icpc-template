@@ -1,0 +1,5 @@
+依次插入模式串，保存每次 \texttt{insert} 返回的终止结点 \texttt{end[i]}；全部插入后只能调用一次 \texttt{build()}，不要再继续插入。
+
+对文本调用 \texttt{cnt = match(text)} 后，第 $i$ 个模式串的出现次数为 \texttt{cnt[end[i]]}。相同模式串会得到相同终止结点和相同答案。匹配允许重叠。
+
+\texttt{fail[u]} 指向结点 $u$ 表示串的最长真后缀状态。模板同时构造 \texttt{tree}，其中边为 \texttt{fail[u]} 到 $u$。fail 树上 $u$ 的子树恰好包含所有以 $u$ 表示串为后缀的状态；离线询问、出现位置与树上统计常转化为 fail 树子树问题。

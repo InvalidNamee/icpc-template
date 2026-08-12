@@ -1,0 +1,52 @@
+SAM 的每个状态 $v$ 代表若干个具有相同 \texttt{endpos} 集合的子串。它们的长度恰为
+\[
+  \texttt{st[link[v]].len}+1,
+  \ldots,
+  \texttt{st[v].len}.
+\]
+因此一个状态贡献 $\texttt{len[v]}-\texttt{len[link[v]]}$ 个不同子串，而这些子串的出现次数都等于 \texttt{occ[v]}。
+
+\textbf{状态字段与下标}
+
+\begin{itemize}
+  \item 根状态编号为 $0$；\texttt{ch[c]} 是添加字符后的状态；
+  \item \texttt{len} 是该状态代表串的最大长度，\texttt{link} 是后缀链接；
+  \item \texttt{occ} 是状态内每个子串的出现次数；
+  \item \texttt{first} 是该状态某次出现的右端点；长度为 $L$ 的代表串可恢复为 $[\texttt{first}-L+1,\texttt{first}]$；
+  \item \texttt{pref[i]} 是原串前缀 $s[1\ldots i]$ 对应的状态。
+\end{itemize}
+
+\textbf{子串是否存在、出现多少次}
+
+待查串 $p$ 也要是 $1$ 下标。\texttt{walk(p)} 沿转移走完，返回 $-1$ 表示 $p$ 不是原串子串，否则返回其状态。\texttt{occurrences(p)} 直接返回出现次数，允许重叠。
+
+如果给的是原串区间 $s[l\ldots r]$，少量询问可直接构造该串后调用 \texttt{walk}。大量区间询问时，从 \texttt{pref[r]} 沿后缀链接向上跳，找到满足
+\[
+  \texttt{len[link[v]]}<r-l+1\le\texttt{len[v]}
+\]
+的状态 $v$；对后缀链接建倍增表即可每次 $O(\log n)$ 定位，答案为 \texttt{occ[v]}。
+
+\textbf{不同子串与第 k 小子串}
+
+\texttt{distinct()} 返回不同子串数量。\texttt{kth(k)} 返回字典序第 $k$ 小的\emph{不同}子串，$k$ 从 $1$ 开始；越界返回空串。这里按转移字符从小到大走，并用 \texttt{dp[v]} 表示从状态 $v$ 出发能形成多少个非空串。
+
+若题目要求按出现次数计重的第 $k$ 小子串，把每个状态作为结尾的贡献 $1$ 从“一个不同串”改为该状态的 \texttt{occ}，并相应重算 DP；当前接口不计重。
+
+\textbf{重复子串}
+
+\texttt{repeat\_at\_least(k)} 返回至少出现 $k$ 次的最长子串长度，允许出现区间重叠。原因是状态 $v$ 的最长代表串长度为 \texttt{len[v]}，只需在所有 \texttt{occ[v]>=k} 的状态中取最大 \texttt{len[v]}。
+
+要求输出一个具体答案时，记最优状态为 $v$，区间可取
+\[
+  [\texttt{first[v]}-\texttt{len[v]}+1,\texttt{first[v]}].
+\]
+
+\textbf{两个字符串的最长公共子串}
+
+先对第一个串构造 SAM，再调用 \texttt{lcs(t)} 扫描第二个串。返回结构包含 \texttt{len}，以及该公共子串在原串中的 $[l1,r1]$ 和在 $t$ 中的 $[l2,r2]$；不存在公共字符时五个值均为 $0$。
+
+多个字符串的最长公共子串：对第一个串建 SAM。对每个其余字符串扫描，求它在每个状态上能匹配到的最大长度，并沿后缀链接按 \texttt{len} 降序传播；对每个状态维护所有字符串结果的最小值，最后取最大值。
+
+\textbf{后缀链接树与出现位置}
+
+\texttt{link\_tree()} 返回后缀链接树。状态 $v$ 的出现右端点对应于其子树内所有前缀状态 \texttt{pref[i]}。对树做 DFS 序后，可把“某子串的所有出现位置”转化为子树内前缀位置查询；配合可持久化线段树、树状数组或离线排序，可处理指定位置范围内的出现次数和第 $k$ 次出现。

@@ -1,0 +1,6 @@
+\ICPCModule{可行流}
+\ICPCMeta{适用条件}{边流量有下界、上界时判断是否存在满足流。}
+\ICPCMeta{建图}{边 $u\to v$ 的流量范围为 $[l,r]$ 时，残量容量设为 $r-l$ 。}
+\ICPCMeta{默认约定}{原图点编号为 $1\sim n$，原边按加入顺序编号为 $1,2,\ldots$。}
+\ICPCNote
+\ICPCCode[下界流（依赖 Dinic）]{code.hpp}
