@@ -1,7 +1,3 @@
-using ll = long long;
-using vi = vector<int>;
-using vvi = vector<vi>;
-
 struct FHQ {
     struct Node {
         int l = 0, r = 0, sz = 0, cnt = 0, key = 0;

@@ -1,7 +1,3 @@
-using ll = long long;
-using vi = vector<int>;
-using vvi = vector<vi>;
-
 map<vi, int> tree_id;
 
 // 返回以 u 为根、且不经过父亲 p 的有根树编号

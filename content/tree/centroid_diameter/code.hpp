@@ -1,7 +1,3 @@
-using ll = long long;
-using vi = vector<int>;
-using vvi = vector<vi>;
-
 vi centroids(const vvi& g) {
     int n = (int)g.size() - 1;
     vi sz(n + 1), ans;

@@ -1,7 +1,3 @@
-using ll = long long;
-using vi = vector<int>;
-using vvi = vector<vi>;
-
 struct EulerTour {
     int tim = 0;
     const vvi& g;

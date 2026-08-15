@@ -1,9 +1,3 @@
-using ll = long long;
-using vi = vector<int>;
-using vvi = vector<vi>;
-using pii = pair<int, int>;
-using vpii = vector<pii>;
-
 // 返回 {根, 儿子数组}，son[u] = {左儿子, 右儿子}
 pair<int, vpii> cartesian_tree(const vi& a) {
     int n = (int)a.size() - 1;

@@ -1,7 +1,3 @@
-using ll = long long;
-using vi = vector<int>;
-using vvi = vector<vi>;
-
 struct LCA {
     const vvi& g;
     vi dep, first, eul, lg;

@@ -1,7 +1,3 @@
-using ll = long long;
-using vi = vector<int>;
-using vvi = vector<vi>;
-
 using Info = ll;
 const Info E = 0; // 空信息的单位元
 

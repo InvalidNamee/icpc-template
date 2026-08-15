@@ -1,8 +1,3 @@
-using ll = long long;
-using vi = vector<int>;
-using vvi = vector<vi>;
-using pii = pair<int, int>;
-
 struct CentroidTree {
     static const int INF = 1e9;
     int n;
