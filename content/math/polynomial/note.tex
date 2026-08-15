@@ -38,6 +38,38 @@ FWT 处理下标之间的按位卷积：
 它们不是子集卷积。
 数组长度应为 $2^d$，不足时补零；若两数组长度不同，补到共同的二次幂长度。
 
+若把每个状态 $s$ 分别映射为 $s\mathbin{|}d$、$s\mathbin{\&}d$ 或
+$s\mathbin{\oplus}d$，并把落到同一状态的权值相加得到 $g$，记 $F,G$
+分别为 $f,g$ 的相应 FWT。令
+\[
+  \chi_k(x)=(-1)^{\operatorname{popcount}(x\mathbin{\&}k)}.
+\]
+下表中“保留”表示 $G[k]=F[k]$：
+
+\begin{center}
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\linewidth}{@{}p{.17\linewidth}p{.15\linewidth}p{.36\linewidth}X@{}}
+  \toprule
+  原域操作 & 使用的 FWT & 变换定义 & FWT 域变化 \\
+  \midrule
+  $s\to s\mathbin{|}d$
+    & OR-FWT
+    & $F[k]=\sum_{s\subseteq k}f[s]$
+    & $d\subseteq k$ 时保留，否则为 $0$ \\
+  $s\to s\mathbin{\&}d$
+    & AND-FWT
+    & $F[k]=\sum_{s\supseteq k}f[s]$
+    & $k\subseteq d$ 时保留，否则为 $0$ \\
+  $s\to s\mathbin{\oplus}d$
+    & XOR-FWT
+    & $F[k]=\sum_s\chi_k(s)f[s]$
+    & 乘 $\chi_k(d)$ \\
+  \bottomrule
+\end{tabularx}
+\end{center}
+
 设一个蝶形中的两个数为 $(x,y)$，正变换分别为
 \[
 \begin{aligned}

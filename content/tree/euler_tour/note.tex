@@ -1,0 +1,20 @@
+使用 \texttt{EulerTour et(g,root)} 构造，\texttt{root} 默认是 $1$。
+
+\textbf{对外数据}
+
+模板一次 DFS 生成三种常用序列：
+
+\begin{itemize}
+  \item \texttt{pre[dfn[u]] = u}：每个点只出现一次，主要用于子树询问和树链剖分。
+  点 $u$ 的子树区间是
+  \[
+    [\texttt{tin[u]},\texttt{tout[u]}].
+  \]
+  \item \texttt{walk2}：进入和离开时各加入一次，每个点恰好出现两次；主要用于树上莫队，点 $u$ 对应 \texttt{in2[u]}、\texttt{out2[u]}。
+  \item \texttt{walk}：进入点时加入，访问完一个儿子后再次加入父亲，共 $2n-1$ 项；两点第一次出现位置之间深度最小的点就是 LCA。
+\end{itemize}
+
+另外，\texttt{fa[u]} 是父亲，\texttt{dep[u]} 是深度；\texttt{dfs} 只用于内部构造，不需要手动调用。
+
+不要混用三种序列的下标。
+只有 \texttt{pre} 的子树天然对应一个连续区间；LCA 使用的是 \texttt{walk}，不是每点出现两次的 \texttt{walk2}。
