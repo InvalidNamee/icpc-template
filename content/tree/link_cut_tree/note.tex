@@ -1,0 +1,53 @@
+LCT 用 Splay 维护若干条实链。
+最重要的操作是 \texttt{access(x)}：把根到 $x$ 的路径改成一条实链；\texttt{makeroot(x)} 再翻转这条链，就能把原树根改成 $x$。
+
+\textbf{路径信息需要满足的性质}
+
+把一段路径的信息记为 \texttt{Info}，按路径顺序用 \texttt{merge(a,b)} 合并。
+它必须满足结合律
+\[
+  \texttt{merge(merge(a,b),c)}
+  =\texttt{merge(a,merge(b,c))},
+\]
+并存在空信息单位元 \texttt{E}，满足
+\[
+  \texttt{merge(E,a)}=\texttt{merge(a,E)}=a.
+\]
+
+模板同时维护正向信息 \texttt{fwd} 和反向信息 \texttt{bwd}，翻转路径时交换二者，所以 \texttt{merge} 不要求交换律。
+加法、最大值、最小值、异或、矩阵乘法和有方向的字符串哈希都可以；减法不满足结合律，不能直接使用。
+
+需要修改的只有：信息类型 \texttt{Info}、单位元 \texttt{E} 和函数 \texttt{merge(a,b)}。
+当前默认示例是路径点权和。
+
+先构造 \texttt{LCT T(n)}，初始时有 $n$ 个互不相连、点权为 $0$ 的点。
+
+\textbf{对外接口}
+
+\begin{itemize}
+  \item \texttt{set\_value(u,x)}：把点 $u$ 的点权改成 $x$；
+  \item \texttt{connected(u,v)}：判断两点是否连通；
+  \item \texttt{link(u,v)}：在不同连通块之间加边，成功返回真；
+  \item \texttt{cut(u,v)}：删除直接边 $(u,v)$，成功返回真；
+  \item \texttt{query(u,v)}：返回从 $u$ 到 $v$ 的有序路径信息；
+  \item \texttt{makeroot(u)}：把 $u$ 设为所在原树的根；
+  \item \texttt{findroot(u)}：返回 $u$ 所在原树当前表示下的根；
+  \item \texttt{split(u,v)}：执行后 $v$ 的 Splay 子树恰好表示路径 $u\leadsto v$。
+\end{itemize}
+
+内部操作分成两类：
+
+\begin{itemize}
+  \item Splay 基础：\texttt{isroot}、\texttt{pushup}、\texttt{reverse}、\texttt{pushdown}、\texttt{rotate}、\texttt{splay}；
+  \item 实链调整：\texttt{access}。
+\end{itemize}
+
+普通调用不需要直接使用这些函数。
+
+若维护边权，常用做法是给每条边新建一个点 $e$，连接 $u-e-v$，把边权放到 $e$ 上，原图点权设为单位元。
+
+\begin{icpcwarning}
+\texttt{cut(u,v)} 只能删除直接相邻的边。
+查询前应保证两点连通；模板没有为非法路径查询额外返回错误码。
+修改维护信息时，只改 \texttt{pushup} 和结点字段，不要碰 \texttt{access/makeroot} 的结构逻辑。
+\end{icpcwarning}

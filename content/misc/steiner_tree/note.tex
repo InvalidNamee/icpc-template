@@ -1,0 +1,40 @@
+\textbf{原图本身是一棵树}
+
+连接终端点集合 $S$ 的最小连通子图是唯一的，就是所有终端点之间路径的并。
+
+\begin{itemize}
+  \item 需要显式保留结构：按 DFS 序排序终端点，加入相邻点的 LCA 后建立虚树；虚树边 $(u,v)$ 的权值是原树距离 $d(u,v)$。
+  \item 只求总边权：将终端点按 DFS 序排列为 $v_1,\ldots,v_k$，令 $v_{k+1}=v_1$，则
+  \[
+    W=\frac12\sum_{i=1}^{k}d(v_i,v_{i+1}).
+  \]
+  \item 只有三个终端点时，直接使用
+  $W=(d(a,b)+d(b,c)+d(c,a))/2$。
+\end{itemize}
+
+原因是按 DFS 序绕终端点一圈时，最小连接子树中的每条边恰好被跨过两次。
+
+\textbf{一般非负权图，终端点很少}
+
+使用 Dreyfus--Wagner 子集 DP。
+设终端点为 $t_0,\ldots,t_{k-1}$，定义
+\[
+  f[S][v]=\text{连接 }S\text{ 中终端点并在 }v\text{ 汇合的最小代价}.
+\]
+
+初始化 $f[2^i][t_i]=0$。
+对每个状态 $S$ 依次进行两步：
+
+\begin{enumerate}
+  \item 在同一个汇合点合并两个子集：
+  \[
+    f[S][v]\gets\min_{A\subset S,\,A\ne\varnothing}
+    \bigl(f[A][v]+f[S\setminus A][v]\bigr).
+  \]
+  \item 把所有 $f[S][v]$ 作为多源初值跑一次 Dijkstra，使汇合点可以沿最短路移动。
+\end{enumerate}
+
+答案是 $\min_v f[2^k-1][v]$。
+若需要输出方案，为“子集合并”和“最短路转移”分别记录前驱。
+一般图斯坦纳树是 NP-hard，这个算法只适合 $k$ 很小；状态解释可参考
+\href{https://codeforces.com/blog/entry/91601}{Codeforces：Dreyfus--Wagner DP}。

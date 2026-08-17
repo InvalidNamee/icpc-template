@@ -1,0 +1,50 @@
+构造时传入 $1$ 下标字符串。三个核心数组含义如下：
+
+\begin{itemize}
+  \item \texttt{sa[k]}：字典序第 $k$ 小的后缀起点；
+  \item \texttt{rk[i]}：后缀 $s[i\ldots n]$ 的字典序排名；
+  \item \texttt{height[k]}：排名 $k$ 与 $k-1$ 的两个相邻后缀的 LCP，并令 \texttt{height[1]=0}。
+\end{itemize}
+
+任意两个后缀的 LCP 满足
+\[
+  \operatorname{LCP}(\texttt{sa[l]},\texttt{sa[r]})
+  =\min_{i=l+1}^{r}\texttt{height[i]}.
+\]
+模板已对 \texttt{height} 建 ST 表，调用 \texttt{lcp(i,j)} 即可 $O(1)$ 查询后缀 $i,j$ 的 LCP。
+
+\textbf{子串判等与比较}
+
+两个子串 $[l_1,r_1]$、$[l_2,r_2]$ 相等，当且仅当长度相等且
+\[
+  \texttt{lcp(l1,l2)}\ge r_1-l_1+1.
+\]
+直接调用 \texttt{cmp(l1,r1,l2,r2)} 可比较字典序，返回 $-1,0,1$。
+
+\textbf{查模式出现次数与位置}
+
+模式串也要是 $1$ 下标。\texttt{match(p)} 返回后缀排名的闭区间 $[L,R]$；若 $L>R$ 表示未出现，否则出现次数为 $R-L+1$，所有出现起点是
+\[
+  \texttt{sa[L]},\texttt{sa[L+1]},\ldots,\texttt{sa[R]}.
+\]
+这些起点按后缀字典序排列，不按数值位置排列；若需要位置有序，应另行排序。
+
+\textbf{不同子串}
+
+排名为 $i$ 的后缀贡献
+\[
+  n-\texttt{sa[i]}+1-\texttt{height[i]}
+\]
+个之前没出现过的子串，因此总数由 \texttt{distinct()} 返回。
+
+\texttt{kth(k)} 返回字典序第 $k$ 小的\emph{不同}子串在原串中的闭区间 $[l,r]$，$k$ 从 $1$ 开始；若 $k$ 超过不同子串总数，返回 $[-1,-1]$。同一内容只计一次，不按出现次数重复计数。
+
+\textbf{重复子串}
+
+最长重复子串长度是 $\max\texttt{height[i]}$。\texttt{repeat\_at\_least(k)} 返回至少出现 $k$ 次的最长子串长度；这里允许不同出现位置互相重叠。原理是在 SA 中枚举连续 $k$ 个后缀，取其间 $k-1$ 个 \texttt{height} 的最小值，再对所有窗口取最大值。
+
+若要求重复出现且互不重叠，可二分答案长度 $L$。按 \texttt{height[i]>=L} 把相邻后缀分组，维护每组后缀起点的最小值与最大值；存在一组满足 $\max pos-\min pos\ge L$ 即可。
+
+\textbf{两个字符串的最长公共子串}
+
+构造 $u=a+\# +b$，分隔符必须不出现在原串中。对 $u$ 建 SA，扫描相邻后缀；若两个后缀分别来自 $a,b$，用对应的 \texttt{height} 更新答案。只需检查相邻后缀，因为跨集合的最优 LCP 一定会在 SA 的相邻异色后缀之间出现。

@@ -1,0 +1,19 @@
+边 $u\to v$ 的流量要满足 $l\le f\le r$时，先加入容量 $r-l$的边，再维护平衡量
+
+\[
+  b_u\mathrel{-}=l,\qquad b_v\mathrel{+}=l.
+\]
+
+新增超级源 $S$ 和超级汇 $T$：$b_i>0$ 时加 $S\to i$，$b_i<0$ 时加 $i\to T$。
+无源汇可行流直接跑这个网络；要求 $s\to t$ 的可行流时额外加一条
+$t\to s$ 的无限容量边。
+超级源的所有边都被满足时，可行流存在。
+建边用 \texttt{add(u,v,l,r)}，最后调用 \texttt{ok()}；有源汇时调用 \texttt{ok(s,t)}。
+
+\textbf{找一组可行解：}每次 \texttt{add} 返回该原边的编号，编号也就是加入顺序（从 $1$ 开始）。若 \texttt{ok} 返回 \texttt{true}，第 $i$ 条原边的实际流量为 \texttt{get(i)}。
+
+模板记录了原边对应的残量边位置。若原边上界为 $r$，算法结束后正向残量为 $c$，则
+\[
+  f=l+((r-l)-c)=r-c.
+\]
+只有在 \texttt{ok} 成功后，所有 \texttt{get(i)} 才共同构成一组满足流量守恒和上下界的可行解。不要对同一个对象重复调用 \texttt{ok}。

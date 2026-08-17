@@ -1,0 +1,22 @@
+每次找到当前连通块的重心 $c$，删除 $c$ 后递归处理各连通块。
+所有原树点各自成为一次重心；重心之间的父子关系构成\textbf{点分树}，其高度为 $O(\log n)$。
+
+先构造 \texttt{CentroidTree T(g)}；构造函数会直接建立点分树和所有距离信息。
+
+\textbf{对外接口与数据}
+
+\begin{itemize}
+  \item \texttt{cpar[u]}：$u$ 在点分树上的父亲，点分树根的父亲为 $0$；
+  \item \texttt{clev[u]}：点分树深度；
+  \item \texttt{path[u]}：所有 \texttt{\{重心祖先, 原树距离\}}；
+  \item \texttt{toggle(u)}：切换点 $u$ 是否被标记；
+  \item \texttt{query(u)}：到最近标记点的距离，没有标记点时返回 \texttt{INF}。
+\end{itemize}
+
+\texttt{dfs\_sz/find/collect/build} 都是构造内部函数，正常使用时不需要调用。
+
+点分治统计路径时，核心是在每个重心处只统计“经过当前重心”的路径，然后容斥掉两个端点落在同一儿子连通块的情况。
+若只需要离线计数，可以保留 \texttt{dfs\_sz/find/build} 框架，把 \texttt{collect} 和动态集合部分替换成题目自己的统计逻辑。
+
+动态查询中，\texttt{path[u]} 保存的是原树距离，不能拿点分树深度相减代替。
+支持删除时每个重心维护一个 \texttt{multiset}；若只有插入，可改成一个最小值数组，使更新也降为 $O(\log n)$。

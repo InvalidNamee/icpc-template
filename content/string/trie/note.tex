@@ -1,0 +1,10 @@
+普通 Trie 的字符串需写成 $1$ 下标形式，查询接口为：
+
+\begin{itemize}
+  \item \texttt{count(s)}：字符串完整出现次数；
+  \item \texttt{prefix\_count(s)}：以 $s$ 为前缀的已插入字符串数量。
+\end{itemize}
+
+01 Trie 使用 \texttt{add(x,1)} 插入，\texttt{add(x,-1)} 删除；删除前必须保证该数仍存在。\texttt{max\_xor(x)} 与 \texttt{min\_xor(x)} 返回异或值本身，不是被选中的数，并且查询时 Trie 不能为空。
+
+默认最高位为 $60$，适用于不超过 $2^{61}-1$ 的非负 \texttt{long long}。若数据只到 $10^9$，可把 \texttt{B} 改为 $30$ 以减小空间。

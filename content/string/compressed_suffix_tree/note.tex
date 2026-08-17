@@ -1,0 +1,56 @@
+压缩后缀树是“所有后缀构成的 Trie”压缩单链后的结果。每条边不复制字符串，只记录原串中的一段闭区间，所以总空间为 $O(n)$。先构造 \texttt{SA a(s)}，再构造 \texttt{SuffixTree tr(s,a)}。
+
+\textbf{结点与边的含义}
+
+根结点编号为 $0$。对结点 $v$：
+
+\begin{itemize}
+  \item \texttt{t[v].dep}：根到 $v$ 的路径字符串长度；
+  \item \texttt{t[v].rep}：包含该路径字符串的一个代表后缀起点；
+  \item \texttt{t[v].suffix}：叶子对应的后缀起点，内部结点为 $0$；
+  \item \texttt{g[v]}：压缩树的儿子，顺序就是字符字典序；
+  \item \texttt{leaf[i]}：后缀 $s[i\ldots n]$ 对应的叶子结点。
+\end{itemize}
+
+\texttt{edge(v)} 返回父亲到 $v$ 的边标记在原串中的闭区间。若父亲为 $p$，该边实际为
+\[
+  s[\texttt{rep[v]}+\texttt{dep[p]}\ldots
+    \texttt{rep[v]}+\texttt{dep[v]}-1].
+\]
+\texttt{path(v)} 返回根到 $v$ 的整个路径字符串所对应的原串区间。
+
+\textbf{为什么可以由 SA 线性构造}
+
+构造时，按 SA 顺序逐个加入叶子。相邻后缀的分叉深度就是它们的 LCP。栈维护当前最右的根到叶路径。设当前 LCP 为 $h$，先弹出深度大于 $h$ 的结点；若栈顶深度小于 $h$，就在上一条边中间插入深度为 $h$ 的内部结点。每个结点只进出栈一次，因此 SA 建好后的建树复杂度为 $O(n)$。
+
+\textbf{模式匹配和出现位置}
+
+模式串也要是 $1$ 下标。\texttt{find(p)} 沿压缩边匹配，返回模式末尾所在边的下端结点；模式可能停在一条边中间，这不影响其子树表示全部出现。返回 $-1$ 表示不存在。
+
+\texttt{occurrences(p)} 返回出现次数。\texttt{match(p)} 返回匹配后缀在 SA 中的闭区间 $[L,R]$；所有出现起点为
+\[
+  \texttt{sa[L]},\texttt{sa[L+1]},\ldots,\texttt{sa[R]}.
+\]
+模板中 \texttt{cnt[v]} 是子树叶子数，\texttt{lo[v],hi[v]} 是子树覆盖的 SA 排名区间，\texttt{mn[v],mx[v]} 是出现起点的最小值与最大值。
+
+\textbf{不同子串和重复子串}
+
+每条边上每增加一个字符，就得到一个新的不同子串，因此
+\[
+  \#\text{不同子串}
+  =\sum_{v\ne0}(\texttt{dep[v]}-\texttt{dep[par[v]]}).
+\]
+接口为 \texttt{distinct()}。
+
+\texttt{repeat\_at\_least(k)} 返回至少出现 $k$ 次的最长子串长度，允许重叠。若要输出具体子串，记录取得最优值的结点 $v$，再从 \texttt{path(v)} 截取相应长度。
+
+\texttt{non\_overlap\_repeat()} 返回至少出现两次且两次不重叠的最长子串长度。对结点 $v$，同一条入边上的隐式结点具有相同叶子集合，可取的最大长度为
+\[
+  \min(\texttt{dep[v]},\texttt{mx[v]}-\texttt{mn[v]}).
+\]
+
+\textbf{树上 DP}
+
+压缩后缀树把“子串问题”变成树问题。一个结点子树内的叶子就是其路径字符串的所有出现位置；边的长度表示一整段具有相同出现集合的子串。常见做法是在树上合并颜色、位置集合或计数，并用边长一次性计算该段全部子串的贡献。
+
+两个字符串或多个字符串时，可在连接串中加入互不相同的分隔符，按叶子来自哪个原串染色。一个内部结点子树若包含所需全部颜色，其深度就是一个公共子串长度；取最大深度得到最长公共子串。

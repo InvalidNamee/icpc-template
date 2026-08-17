@@ -1,0 +1,40 @@
+#include <algorithm>
+#include <vector>
+
+using ll = long long;
+
+struct Euler {
+    struct E { int v, id; };
+
+    int n, m = 0;
+    vector<vector<E>> g;
+    vector<int> vis, cur, ans;
+
+    Euler(int n) : n(n), g(n), cur(n) {}
+
+    void add(int u, int v) { g[u].push_back({v, m++}); }
+
+    void addu(int u, int v) {
+        g[u].push_back({v, m});
+        g[v].push_back({u, m++});
+    }
+
+    void dfs(int u) {
+        while (cur[u] < (int) g[u].size()) {
+            E e = g[u][cur[u]++];
+            if (vis[e.id]) continue;
+            vis[e.id] = 1;
+            dfs(e.v);
+        }
+        ans.push_back(u);
+    }
+
+    vector<int> run(int s) {
+        vis.assign(m, 0);
+        ans.clear();
+        dfs(s);
+        if ((int) ans.size() != m + 1) return {};
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};

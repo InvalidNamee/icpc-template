@@ -1,0 +1,21 @@
+DFS 时记录长度为 $2n-1$ 的完整欧拉序 \texttt{eul}。
+设 \texttt{first[u]} 是 $u$ 第一次出现的位置，则
+\[
+  \operatorname{lca}(u,v)
+  =\mathop{\arg\min}_{i\in[\texttt{first[u]},\texttt{first[v]}]}
+  \texttt{dep[eul[i]]}.
+\]
+模板在欧拉序上建立 ST 表，因此查询为严格 $O(1)$。
+
+先构造 \texttt{LCA T(g,root)}，\texttt{root} 默认是 $1$。
+
+\textbf{对外接口}
+
+\begin{itemize}
+  \item \texttt{lca(u,v)}：最近公共祖先；
+  \item \texttt{dist(u,v)}：无权距离，即路径边数；
+  \item \texttt{on\_path(x,u,v)}：判断 $x$ 是否位于简单路径 $u\leadsto v$ 上；
+  \item \texttt{first}、\texttt{eul}：可以直接复用完整欧拉序。
+\end{itemize}
+
+若内存紧张，改用倍增 LCA。
