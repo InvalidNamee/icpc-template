@@ -1,5 +1,13 @@
-依次插入模式串，保存每次 \texttt{insert} 返回的终止结点 \texttt{end[i]}；全部插入后只能调用一次 \texttt{build()}，不要再继续插入。
+依次调用 \texttt{add(pattern,id)} 加入模式串，全部加入后调用一次 \texttt{build()}。
+对文本调用 \texttt{query(text)}，返回值 \texttt{ans[i]} 包含所有在位置 \(i\) 结尾的模式串编号。
 
-对文本调用 \texttt{cnt = match(text)} 后，第 $i$ 个模式串的出现次数为 \texttt{cnt[end[i]]}。相同模式串会得到相同终止结点和相同答案。匹配允许重叠。
+\texttt{fail} 指向当前状态表示串的最长真后缀状态。
+\texttt{out} 进一步跳到最近的、保存了模式串编号的 fail 祖先，因此查询时不必遍历整条 fail 链。
 
-\texttt{fail[u]} 指向结点 $u$ 表示串的最长真后缀状态。模板同时构造 \texttt{tree}，其中边为 \texttt{fail[u]} 到 $u$。fail 树上 $u$ 的子树恰好包含所有以 $u$ 表示串为后缀的状态；离线询问、出现位置与树上统计常转化为 fail 树子树问题。
+\begin{icpcwarning}[使用前确认]
+  \begin{itemize}
+    \item \texttt{build()} 会补全自动机转移，调用后不要继续加入模式串。
+    \item 查询复杂度包含实际输出的匹配数量；若只需统计次数，应改用 fail 树或逆 BFS 累加。
+    \item 相同模式串可以保存多个编号，并会在同一结束位置全部返回。
+  \end{itemize}
+\end{icpcwarning}

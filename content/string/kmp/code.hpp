@@ -1,6 +1,3 @@
-#include <string>
-#include <vector>
-
 using ll = long long;
 
 vector<int> prefix_function(const string& s) {

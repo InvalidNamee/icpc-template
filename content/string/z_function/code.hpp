@@ -1,7 +1,3 @@
-#include <algorithm>
-#include <string>
-#include <vector>
-
 using ll = long long;
 
 vector<int> z_function(const string& s) {

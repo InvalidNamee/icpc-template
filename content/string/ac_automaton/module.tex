@@ -1,6 +1,6 @@
 \ICPCModule{AC 自动机}
-\ICPCMeta{适用条件}{多模式匹配、统计每个模式出现次数、fail 树。}
-\ICPCMeta{复杂度}{建树与匹配均为总字符数线性复杂度。}
-\ICPCMeta{默认约定}{字符集为小写字母，字符串下标从 $1$ 开始。}
+\ICPCMeta{适用条件}{多模式匹配，枚举每个位置结尾的全部模式串编号。}
+\ICPCMeta{复杂度}{构建 $O(26\cdot states)$，查询 $O(|text|+\text{匹配总数})$。}
+\ICPCMeta{默认约定}{字符集为小写字母，模式串非空，先全部加入再构建。}
 \ICPCNote
-\ICPCCode[AC 自动机与 fail 树]{code.hpp}
+\ICPCCode[AC 自动机与输出链]{code.hpp}

@@ -1,0 +1,14 @@
+在无向图中，删去所有桥后得到的每个连通块都是一个边双连通分量。
+模板用边编号区分父边和重边，并在 \(dfn[u]=low[u]\) 时弹栈得到一个分量。
+
+运行 \texttt{run()} 后，\texttt{bel[u]} 是顶点 \(u\) 所属的边双编号。
+\texttt{tree} 是缩点后的桥树森林，节点编号为 \(1\ldots cnt\)。
+
+\begin{icpcresult}[桥的判定]
+  对 DFS 树边 \((u,v)\)，若 \(low[v]>dfn[u]\)，则该边是桥，且它的两个端点会属于不同的边双连通分量。
+\end{icpcresult}
+
+\begin{icpcwarning}[无向边编号]
+  不能只按父顶点跳边，否则重边会被误判为桥。
+  模板为每条无向边分配唯一编号，DFS 只跳过进入当前点的那一条边。
+\end{icpcwarning}

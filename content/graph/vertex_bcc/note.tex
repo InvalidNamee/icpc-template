@@ -1,0 +1,13 @@
+对 DFS 树边 \((u,v)\)，若 \(low[v]\ge dfn[u]\)，则从栈顶弹到 \(v\)，再加入 \(u\)，得到一个点双连通分量。
+割点可能同时属于多个点双，因此不能只用一个编号表示其所属分量。
+
+运行 \texttt{run()} 后，\texttt{bcc[i]} 保存第 \(i\) 个点双中的原图顶点，\texttt{cut[u]} 表示 \(u\) 是否为割点。
+
+\begin{icpcresult}[圆方树编号]
+  \texttt{tree} 中 \(1\ldots n\) 是原图顶点，\(n+i\) 是第 \(i\) 个点双对应的方点。
+  每个方点与该点双内的所有原图顶点连边，得到圆方树森林。
+\end{icpcresult}
+
+\begin{icpcwarning}[根节点判定]
+  DFS 根节点只有在搜索树中拥有至少两个儿子时才是割点；非根节点只要存在儿子 \(v\) 满足 \(low[v]\ge dfn[u]\) 就是割点。
+\end{icpcwarning}

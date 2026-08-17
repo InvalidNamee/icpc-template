@@ -1,9 +1,3 @@
-#include <algorithm>
-#include <deque>
-#include <string>
-#include <utility>
-#include <vector>
-
 using ll = long long;
 
 struct SA {
