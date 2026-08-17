@@ -1,27 +1,25 @@
-#include <algorithm>
-#include <string>
-#include <utility>
-#include <vector>
-
-using ll = long long;
-
 struct SuffixTree {
     struct Node {
-        int par = -1, dep = 0, rep = 0;
-        int suffix = 0, rank = 0;
+        int par = -1; // 父结点
+        int dep = 0;  // 根到该结点的字符串长度
+        int rep = 0;  // 一个代表后缀的起点
+        int suf = -1; // 叶子对应的后缀起点，内部结点为 -1
+        int rank = -1; // 叶子对应的 SA 排名，内部结点为 -1
     };
 
     int n;
     string s;
-    vector<int> sa, leaf, cnt, lo, hi, mn, mx;
+    vector<int> sa, leaf;
+    vector<int> cnt, lo, hi; // 子树叶数、最小和最大 SA 排名
+    vector<int> mn, mx;      // 子树内最小和最大后缀起点
     vector<Node> t;
     vector<vector<int>> g;
 
     SuffixTree(const string& s, const SA& a)
-        : n((int)s.size() - 1), s(s), sa(a.sa), leaf(n + 1) {
-        node(0, 1);
+        : n(s.size()), s(s), sa(a.sa), leaf(n, -1) {
+        node(0, 0);
         vector<int> stk{0};
-        for (int i = 1; i <= n; i++) {
+        for (int i = 0; i < n; i++) {
             int h = a.height[i];
             while (t[stk.back()].dep > h) stk.pop_back();
             if (t[stk.back()].dep < h) {
@@ -33,7 +31,7 @@ struct SuffixTree {
                 link(u, v);
                 stk.push_back(u);
             }
-            int v = node(n - sa[i] + 1, sa[i], sa[i], i);
+            int v = node(n - sa[i], sa[i], sa[i], i);
             leaf[sa[i]] = v;
             link(stk.back(), v);
             stk.push_back(v);
@@ -41,9 +39,9 @@ struct SuffixTree {
         pull();
     }
 
-    int node(int dep, int rep, int suffix = 0, int rank = 0) {
+    int node(int dep, int rep, int suf = -1, int rank = -1) {
         int u = t.size();
-        t.push_back({-1, dep, rep, suffix, rank});
+        t.push_back({-1, dep, rep, suf, rank});
         g.push_back({});
         return u;
     }
@@ -67,17 +65,17 @@ struct SuffixTree {
     void pull() {
         int sz = t.size();
         cnt.assign(sz, 0);
-        lo.assign(sz, n + 1);
-        hi.assign(sz, 0);
-        mn.assign(sz, n + 1);
-        mx.assign(sz, 0);
+        lo.assign(sz, n);
+        hi.assign(sz, -1);
+        mn.assign(sz, n);
+        mx.assign(sz, -1);
         vector<int> ord{0};
         for (int i = 0; i < (int)ord.size(); i++)
             for (int v : g[ord[i]]) ord.push_back(v);
-        for (int v = 1; v < sz; v++) if (t[v].suffix) {
+        for (int v = 1; v < sz; v++) if (t[v].suf != -1) {
             cnt[v] = 1;
             lo[v] = hi[v] = t[v].rank;
-            mn[v] = mx[v] = t[v].suffix;
+            mn[v] = mx[v] = t[v].suf;
         }
         for (int i = (int)ord.size() - 1; i > 0; i--) {
             int v = ord[i], p = t[v].par;
@@ -91,8 +89,8 @@ struct SuffixTree {
 
     // 返回模式串所在边的下端结点；不存在时返回 -1
     int find(const string& p) {
-        int u = 0, i = 1, m = (int)p.size() - 1;
-        while (i <= m) {
+        int u = 0, i = 0, m = p.size();
+        while (i < m) {
             int v = -1, l = 0, r = -1;
             for (int x : g[u]) {
                 auto e = edge(x);
@@ -104,9 +102,9 @@ struct SuffixTree {
                 }
             }
             if (v == -1) return -1;
-            for (int j = l; j <= r && i <= m; j++, i++)
+            for (int j = l; j <= r && i < m; j++, i++)
                 if (s[j] != p[i]) return -1;
-            if (i > m) return v;
+            if (i == m) return v;
             u = v;
         }
         return u;
@@ -120,7 +118,7 @@ struct SuffixTree {
     // 返回匹配后缀在 SA 中的闭区间，无匹配时 L > R
     pair<int, int> match(const string& p) {
         int v = find(p);
-        return v == -1 ? pair<int, int>{1, 0}
+        return v == -1 ? pair<int, int>{0, -1}
                        : pair<int, int>{lo[v], hi[v]};
     }
 

@@ -1,6 +1,3 @@
-#include <algorithm>
-#include <vector>
-
 using ll = long long;
 
 struct Euler {

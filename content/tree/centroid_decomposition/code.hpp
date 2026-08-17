@@ -1,12 +1,12 @@
 struct CentroidTree {
     static const int INF = 1e9;
     int n;
-    const vvi& g;
-    vi sz, dead, cpar, clev, active;
-    vector<vector<pii>> path;
+    const vector<vector<int>>& g;
+    vector<int> sz, dead, cpar, clev, active;
+    vector<vector<pair<int, int>>> path;
     vector<multiset<int>> bag;
 
-    CentroidTree(const vvi& g) : n((int)g.size() - 1), g(g) {
+    CentroidTree(const vector<vector<int>>& g) : n((int)g.size() - 1), g(g) {
         sz.resize(n + 1); dead.assign(n + 1, 0);
         cpar.assign(n + 1, 0); clev.assign(n + 1, 0);
         active.assign(n + 1, 0); path.resize(n + 1); bag.resize(n + 1);

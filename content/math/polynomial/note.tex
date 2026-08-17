@@ -20,6 +20,106 @@ NTT 在有限域上计算普通卷积。
 \]
 其中 $G$ 是原根，故变换长度必须是不超过 $2^{23}$ 的二次幂。
 每层现场计算单位根，不额外维护根表或位逆序表，复杂度为 $O(N\log N)$。
+\texttt{ntt\_mul(a,b)} 不再逐项取模，调用前应保证两数组的系数均在 $[0,P)$ 内。
+
+\subsubsection{Newton 迭代：求逆、对数、指数}
+
+设已经求出
+\[
+  A(x)B(x)\equiv1\pmod{x^m}.
+\]
+将精度翻倍时使用
+\[
+  B'(x)=B(x)\bigl(2-A(x)B(x)\bigr)\pmod{x^{2m}}.
+\]
+因为
+\[
+  1-A B'=(1-A B)^2,
+\]
+原误差至少含因子 $x^m$，平方后至少含因子 $x^{2m}$。
+初值是常数项的逆 $B_0=A_0^{-1}$，每轮把已知系数数量翻倍。
+
+\texttt{poly\_inv(f,n)} 返回 $F(x)^{-1}\bmod x^n$ 的前 $n$ 项。
+系数使用 $0$ 下标，要求 $n\ge1$ 且 $f_0\not\equiv0\pmod{998244353}$。
+代码直接依赖前面的 \texttt{NTT\_MOD}、\texttt{ntt\_qpow} 和 \texttt{ntt\_mul}，总复杂度为 $O(n\log n)$。
+
+多项式对数由
+\[
+  \ln F(x)=\int\frac{F'(x)}{F(x)}\,\mathrm dx
+\]
+计算。\texttt{poly\_ln(f,n)} 返回 $\ln F(x)\bmod x^n$，要求 $f_0=1$。
+积分所需的 $1,2,\ldots,n$ 的逆元使用线性递推一次预处理，不再逐项快速幂。
+
+多项式指数是对数的逆运算。若已有 $G(x)$ 的低 $m$ 项满足 $\ln G=F$，Newton 迭代写成
+\[
+  G'(x)=G(x)\bigl(1+F(x)-\ln G(x)\bigr)\pmod{x^{2m}}.
+\]
+\texttt{poly\_exp(f)} 返回 $\exp F(x)\bmod x^n$，其中 $n$ 是 \texttt{f.size()}，要求 $f_0=0$。
+三个函数均返回长度恰好为 $n$ 的系数数组，复杂度均为 $O(n\log n)$。
+
+\subsubsection{指数公式}
+
+设 $c_n$ 是在 $n$ 个标号元素上构造一个连通块的方案数，$a_n$ 是构造任意个互不相交、顺序不计的连通块的方案数，其中 $a_0=1$。
+定义指数生成函数
+\[
+  C(x)=\sum_{n\ge1}c_n\frac{x^n}{n!},
+  \qquad
+  A(x)=\sum_{n\ge0}a_n\frac{x^n}{n!}.
+\]
+指数公式给出
+\[
+  A(x)=\exp C(x),
+  \qquad
+  C(x)=\ln A(x).
+\]
+若要求恰好由 $k$ 个连通块组成，对应的指数生成函数为
+\[
+  A_k(x)=\frac{C(x)^k}{k!}.
+\]
+
+使用模板求到大小 $n$ 时，数组长度取 $n+1$。
+已知连通方案数，应令 \texttt{f[i]}$=c_i/i!$，调用 \texttt{poly\_exp(f)} 后再将第 $i$ 项乘 $i!$，得到 $a_i$。
+反过来，令 \texttt{f[i]}$=a_i/i!$，调用 \texttt{poly\_ln(f,n+1)} 后再将第 $i$ 项乘 $i!$，得到 $c_i$。
+所有除法均使用模意义下的阶乘逆元。
+
+\subsubsection{不可分割排列}
+
+排列 $p_1,p_2,\ldots,p_n$ 若不存在 $1\le k<n$ 使
+\[
+  \{p_1,p_2,\ldots,p_k\}=\{1,2,\ldots,k\},
+\]
+则称为不可分割排列；判断条件等价于每个真前缀都满足
+\[
+  \max(p_1,\ldots,p_k)\ne k
+  \qquad(1\le k<n).
+\]
+记长度为 $n$ 的不可分割排列数为 $d_n$。
+
+任意排列都能唯一地从左到右分成若干个不可分割块，因此这里使用普通生成函数
+\[
+  P(x)=\sum_{n\ge0}n!x^n,
+  \qquad
+  D(x)=\sum_{n\ge1}d_nx^n.
+\]
+各块有顺序，故
+\[
+  P(x)=1+D(x)+D(x)^2+\cdots=\frac1{1-D(x)},
+  \qquad
+  D(x)=1-\frac1{P(x)}.
+\]
+求 $d_1,\ldots,d_n$ 时，令长度为 $n+1$ 的 \texttt{f} 满足
+\texttt{f[0]=1}、\texttt{f[i]}$=i!$，再计算
+\texttt{iv=poly\_inv(f,n+1)}。
+答案为 $d_0=0$，且
+\[
+  d_i=-\texttt{iv[i]}\pmod{998244353}\qquad(i\ge1).
+\]
+这部分是普通生成函数，系数不能除以 $i!$，总复杂度为 $O(n\log n)$。
+若数据较小，也可使用
+\[
+  d_n=n!-\sum_{k=1}^{n-1}d_k(n-k)!
+\]
+做 $O(n^2)$ 递推。
 
 \subsubsection{FWT}
 

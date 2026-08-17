@@ -1,6 +1,6 @@
-vi centroids(const vvi& g) {
+vector<int> centroids(const vector<vector<int>>& g) {
     int n = (int)g.size() - 1;
-    vi sz(n + 1), ans;
+    vector<int> sz(n + 1), ans;
     function<void(int, int)> dfs = [&](int u, int p) {
         sz[u] = 1; int mx = 0;
         for (int v : g[u]) if (v != p)
@@ -12,9 +12,9 @@ vi centroids(const vvi& g) {
 }
 
 // 返回 {直径长度, 端点 a, 端点 b}
-array<int, 3> diameter(const vvi& g) {
+array<int, 3> diameter(const vector<vector<int>>& g) {
     auto bfs = [&](int s) {
-        vi d(g.size(), -1); queue<int> q; q.push(s); d[s] = 0;
+        vector<int> d(g.size(), -1); queue<int> q; q.push(s); d[s] = 0;
         while (!q.empty()) {
             int u = q.front(); q.pop();
             for (int v : g[u]) if (d[v] < 0) d[v] = d[u] + 1, q.push(v);

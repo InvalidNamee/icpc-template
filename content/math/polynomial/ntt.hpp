@@ -61,8 +61,6 @@ vector<int> ntt_mul(vector<int> a, vector<int> b) {
     int n = 1;
     while (n < size) n <<= 1;
 
-    for (int& x : a) x = (x % NTT_MOD + NTT_MOD) % NTT_MOD;
-    for (int& x : b) x = (x % NTT_MOD + NTT_MOD) % NTT_MOD;
     a.resize(n);
     b.resize(n);
 

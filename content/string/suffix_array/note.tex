@@ -1,9 +1,9 @@
-构造时传入 $1$ 下标字符串。三个核心数组含义如下：
+构造时直接传入普通字符串。三个核心数组含义如下：
 
 \begin{itemize}
-  \item \texttt{sa[k]}：字典序第 $k$ 小的后缀起点；
-  \item \texttt{rk[i]}：后缀 $s[i\ldots n]$ 的字典序排名；
-  \item \texttt{height[k]}：排名 $k$ 与 $k-1$ 的两个相邻后缀的 LCP，并令 \texttt{height[1]=0}。
+  \item \texttt{sa[k]}：排名为 $k$ 的后缀起点，$k=0$ 表示字典序最小；
+  \item \texttt{rk[i]}：后缀 $s[i\ldots n-1]$ 的 $0$ 下标排名；
+  \item \texttt{height[k]}：排名 $k$ 与 $k-1$ 的两个相邻后缀的 LCP，并令 \texttt{height[0]=0}。
 \end{itemize}
 
 任意两个后缀的 LCP 满足
@@ -23,7 +23,7 @@
 
 \textbf{查模式出现次数与位置}
 
-模式串也要是 $1$ 下标。\texttt{match(p)} 返回后缀排名的闭区间 $[L,R]$；若 $L>R$ 表示未出现，否则出现次数为 $R-L+1$，所有出现起点是
+模式串直接传入普通字符串。\texttt{match(p)} 返回 $0$ 下标后缀排名的闭区间 $[L,R]$；若 $L>R$ 表示未出现，否则出现次数为 $R-L+1$，所有出现起点是
 \[
   \texttt{sa[L]},\texttt{sa[L+1]},\ldots,\texttt{sa[R]}.
 \]
@@ -33,11 +33,11 @@
 
 排名为 $i$ 的后缀贡献
 \[
-  n-\texttt{sa[i]}+1-\texttt{height[i]}
+  n-\texttt{sa[i]}-\texttt{height[i]}
 \]
 个之前没出现过的子串，因此总数由 \texttt{distinct()} 返回。
 
-\texttt{kth(k)} 返回字典序第 $k$ 小的\emph{不同}子串在原串中的闭区间 $[l,r]$，$k$ 从 $1$ 开始；若 $k$ 超过不同子串总数，返回 $[-1,-1]$。同一内容只计一次，不按出现次数重复计数。
+\texttt{kth(k)} 返回字典序第 $k$ 小的\emph{不同}子串在原串中的 $0$ 下标闭区间 $[l,r]$；这里 $k$ 是序数，仍从 $1$ 开始。若 $k$ 超过不同子串总数，返回 $[-1,-1]$。同一内容只计一次，不按出现次数重复计数。
 
 \textbf{重复子串}
 

@@ -1,14 +1,7 @@
-#include <algorithm>
-#include <array>
-#include <string>
-#include <vector>
-
-using ll = long long;
-
 struct SAM {
     struct State {
         array<int, 26> ch{};
-        int link = -1, len = 0, first = 0;
+        int link = -1, len = 0, first = -1;
         ll occ = 0, dp = 0;
     };
     struct LCS {
@@ -19,9 +12,9 @@ struct SAM {
     vector<State> st{1};
     vector<int> order, pref;
 
-    SAM(const string& s) : n((int)s.size() - 1), pref(n + 1) {
+    SAM(const string& s) : n(s.size()), pref(n) {
         st.reserve(2 * n);
-        for (int i = 1; i <= n; i++) extend(s[i] - 'a', i);
+        for (int i = 0; i < n; i++) extend(s[i] - 'a', i);
         finish();
     }
 
@@ -85,8 +78,8 @@ struct SAM {
 
     int walk(const string& p) {
         int u = 0;
-        for (int i = 1; i < (int)p.size(); i++) {
-            int c = p[i] - 'a';
+        for (char x : p) {
+            int c = x - 'a';
             if (!st[u].ch[c]) return -1;
             u = st[u].ch[c];
         }
@@ -132,8 +125,8 @@ struct SAM {
     }
 
     LCS lcs(const string& t) {
-        int u = 0, len = 0, best = 0, end = 0, state = 0;
-        for (int i = 1; i < (int)t.size(); i++) {
+        int u = 0, len = 0, best = 0, end = -1, state = 0;
+        for (int i = 0; i < (int)t.size(); i++) {
             int c = t[i] - 'a';
             while (u && !st[u].ch[c]) {
                 u = st[u].link;
@@ -148,7 +141,7 @@ struct SAM {
             }
             if (len > best) best = len, end = i, state = u;
         }
-        if (!best) return {0, 0, 0, 0, 0};
+        if (!best) return {0, -1, -1, -1, -1};
         return {best, st[state].first - best + 1, st[state].first,
                 end - best + 1, end};
     }

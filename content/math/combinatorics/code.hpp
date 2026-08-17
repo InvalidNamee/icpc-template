@@ -1,5 +1,3 @@
-#include <vector>
-
 using ll = long long;
 
 struct Comb {

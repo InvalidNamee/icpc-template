@@ -1,10 +1,15 @@
-map<vi, int> tree_id;
+uint64_t salt = chrono::steady_clock::now()
+                    .time_since_epoch().count();
 
-// 返回以 u 为根、且不经过父亲 p 的有根树编号
-int tree_hash(const vvi& g, int u, int p = 0) {
-    vi h;
-    for (int v : g[u]) if (v != p) h.push_back(tree_hash(g, v, u));
-    sort(h.begin(), h.end());
-    if (!tree_id.count(h)) tree_id[h] = (int)tree_id.size() + 1;
-    return tree_id[h];
-}
+// 放在 g 建好之后，dfs(u, p) 返回不经过 p 的子树哈希
+function<uint64_t(int, int)> dfs = [&](int u, int p) {
+    uint64_t h = 1;
+    for (int v : g[u]) if (v != p) {
+        uint64_t x = dfs(v, u) ^ salt;
+        x ^= x << 13;
+        x ^= x >> 7;
+        x ^= x << 17;
+        h += x ^ salt;
+    }
+    return h;
+};

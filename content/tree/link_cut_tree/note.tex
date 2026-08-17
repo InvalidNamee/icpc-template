@@ -25,14 +25,14 @@ LCT 用 Splay 维护若干条实链。
 \textbf{对外接口}
 
 \begin{itemize}
-  \item \texttt{set\_value(u,x)}：把点 $u$ 的点权改成 $x$；
-  \item \texttt{connected(u,v)}：判断两点是否连通；
-  \item \texttt{link(u,v)}：在不同连通块之间加边，成功返回真；
-  \item \texttt{cut(u,v)}：删除直接边 $(u,v)$，成功返回真；
-  \item \texttt{query(u,v)}：返回从 $u$ 到 $v$ 的有序路径信息；
-  \item \texttt{makeroot(u)}：把 $u$ 设为所在原树的根；
-  \item \texttt{findroot(u)}：返回 $u$ 所在原树当前表示下的根；
-  \item \texttt{split(u,v)}：执行后 $v$ 的 Splay 子树恰好表示路径 $u\leadsto v$。
+  \item \texttt{set\_value(u,x)}：把点 $u$ 的点权改成 $x$，均摊 $O(\log n)$；
+  \item \texttt{connected(u,v)}：判断两点是否连通，均摊 $O(\log n)$；
+  \item \texttt{link(u,v)}：在不同连通块之间加边，成功返回真，均摊 $O(\log n)$；
+  \item \texttt{cut(u,v)}：删除直接边 $(u,v)$，成功返回真，均摊 $O(\log n)$；
+  \item \texttt{query(u,v)}：返回从 $u$ 到 $v$ 的有序路径信息，均摊 $O(\log n)$；
+  \item \texttt{makeroot(u)}：把 $u$ 设为所在原树的根，均摊 $O(\log n)$；
+  \item \texttt{findroot(u)}：返回 $u$ 所在原树当前表示下的根，均摊 $O(\log n)$；
+  \item \texttt{split(u,v)}：执行后 $v$ 的 Splay 子树恰好表示路径 $u\leadsto v$，均摊 $O(\log n)$。
 \end{itemize}
 
 内部操作分成两类：

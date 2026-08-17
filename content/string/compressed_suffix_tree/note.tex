@@ -7,9 +7,10 @@
 \begin{itemize}
   \item \texttt{t[v].dep}：根到 $v$ 的路径字符串长度；
   \item \texttt{t[v].rep}：包含该路径字符串的一个代表后缀起点；
-  \item \texttt{t[v].suffix}：叶子对应的后缀起点，内部结点为 $0$；
+  \item \texttt{t[v].suf}：叶子对应的后缀起点，内部结点为 $-1$；
+  \item \texttt{t[v].rank}：叶子对应的 SA 排名，内部结点为 $-1$；
   \item \texttt{g[v]}：压缩树的儿子，顺序就是字符字典序；
-  \item \texttt{leaf[i]}：后缀 $s[i\ldots n]$ 对应的叶子结点。
+  \item \texttt{leaf[i]}：后缀 $s[i\ldots n-1]$ 对应的叶子结点。
 \end{itemize}
 
 \texttt{edge(v)} 返回父亲到 $v$ 的边标记在原串中的闭区间。若父亲为 $p$，该边实际为
@@ -25,9 +26,9 @@
 
 \textbf{模式匹配和出现位置}
 
-模式串也要是 $1$ 下标。\texttt{find(p)} 沿压缩边匹配，返回模式末尾所在边的下端结点；模式可能停在一条边中间，这不影响其子树表示全部出现。返回 $-1$ 表示不存在。
+模式串直接传入普通字符串。\texttt{find(p)} 沿压缩边匹配，返回模式末尾所在边的下端结点；模式可能停在一条边中间，这不影响其子树表示全部出现。返回 $-1$ 表示不存在。
 
-\texttt{occurrences(p)} 返回出现次数。\texttt{match(p)} 返回匹配后缀在 SA 中的闭区间 $[L,R]$；所有出现起点为
+\texttt{occurrences(p)} 返回出现次数。\texttt{match(p)} 返回匹配后缀在 SA 中的 $0$ 下标闭区间 $[L,R]$；所有出现起点为
 \[
   \texttt{sa[L]},\texttt{sa[L+1]},\ldots,\texttt{sa[R]}.
 \]

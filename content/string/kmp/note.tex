@@ -1,14 +1,14 @@
-对字符串 $s[1\ldots n]$，\texttt{pi[i]} 表示 $s[1\ldots i]$ 的最长真 border 长度，即最长的 $k<i$，满足
+对字符串 $s[0\ldots n-1]$，\texttt{pi[i]} 表示 $s[0\ldots i]$ 的最长真 border 长度，即最长的 $k<i+1$，满足
 \[
-  s[1\ldots k]=s[i-k+1\ldots i].
+  s[0\ldots k-1]=s[i-k+1\ldots i].
 \]
 
-所有真 border 可从 $k=\texttt{pi[n]}$ 开始反复令 $k=\texttt{pi[k]}$ 得到。最小候选周期为 $p=n-\texttt{pi[n]}$；若要求字符串由某个串完整重复得到，还需检查 $n\bmod p=0$，否则最小完整周期是 $n$。
+所有真 border 可从 $k=\texttt{pi[n-1]}$ 开始反复令 $k=\texttt{pi[k-1]}$ 得到。最小候选周期为 $p=n-\texttt{pi[n-1]}$；若要求字符串由某个串完整重复得到，还需检查 $n\bmod p=0$，否则最小完整周期是 $n$。
 
-\texttt{kmp(text,pat)} 返回模式串每次出现的起点，均为 $1$ 下标。允许匹配重叠，例如模式 	exttt{aaa} 在 	exttt{aaaa} 中出现两次。
+\texttt{kmp(text,pat)} 返回模式串每次出现的起点，均为 $0$ 下标。允许匹配重叠，例如模式 \texttt{aaa} 在 \texttt{aaaa} 中出现两次。
 
 统计每个前缀在整个串中的出现次数：先对每个位置 $i$ 给 $c_{\pi_i}$ 加一，再按长度从大到小令
 \[
-  c_{\pi_i}\mathrel{+}=c_i.
+  c_{\texttt{pi[len-1]}}\mathrel{+}=c_{\texttt{len}}.
 \]
-最后每个 $c_i$ 再加一，计入前缀自身。
+具体地，先令 \texttt{c[pi[i]]++}，再让长度 \texttt{len} 从 $n$ 降到 $1$ 做上述转移；最后每个正长度的 \texttt{c[len]} 再加一，计入前缀自身。

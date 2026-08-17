@@ -1,11 +1,11 @@
 struct EulerTour {
     int tim = 0;
-    const vvi& g;
-    vi dep, fa, tin, tout, pre;
-    vi in2, out2, walk2; // 每个点进入、离开各出现一次，长度 2n
-    vi first, walk;      // LCA 欧拉序，长度 2n-1
+    const vector<vector<int>>& g;
+    vector<int> dep, fa, tin, tout, pre;
+    vector<int> in2, out2, walk2; // 每个点进入、离开各出现一次，长度 2n
+    vector<int> first, walk;      // LCA 欧拉序，长度 2n-1
 
-    EulerTour(const vvi& g, int root = 1) : g(g) {
+    EulerTour(const vector<vector<int>>& g, int root = 1) : g(g) {
         int n = (int)g.size() - 1;
         dep.assign(n + 1, 0); fa.assign(n + 1, 0);
         tin.assign(n + 1, 0); tout.assign(n + 1, 0);
