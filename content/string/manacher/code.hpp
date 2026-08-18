@@ -1,21 +1,18 @@
-using ll = long long;
-
 struct Manacher {
     int n;
     string s;
     vector<int> odd, even;
 
-    Manacher(const string& s) : n((int)s.size() - 1), s(s),
-                                odd(n + 1), even(n + 1) {
-        for (int i = 1, l = 1, r = 0; i <= n; i++) {
+    Manacher(const string& s) : n(s.size()), s(s), odd(n), even(n) {
+        for (int i = 0, l = 0, r = -1; i < n; i++) {
             int k = i > r ? 1 : min(odd[l + r - i], r - i + 1);
-            while (i - k >= 1 && i + k <= n && s[i - k] == s[i + k]) k++;
+            while (i - k >= 0 && i + k < n && s[i - k] == s[i + k]) k++;
             odd[i] = k;
             if (i + k - 1 > r) l = i - k + 1, r = i + k - 1;
         }
-        for (int i = 1, l = 1, r = 0; i <= n; i++) {
+        for (int i = 0, l = 0, r = -1; i < n; i++) {
             int k = i > r ? 0 : min(even[l + r - i + 1], r - i + 1);
-            while (i - k - 1 >= 1 && i + k <= n &&
+            while (i - k - 1 >= 0 && i + k < n &&
                    s[i - k - 1] == s[i + k]) k++;
             even[i] = k;
             if (i + k - 1 > r) l = i - k, r = i + k - 1;

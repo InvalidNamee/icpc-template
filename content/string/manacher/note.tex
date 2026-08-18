@@ -2,4 +2,4 @@
 
 \texttt{even[i]} 表示中心位于 $i-1$ 与 $i$ 之间的偶回文半径，最长长度为 $2\cdot\texttt{even[i]}$。因此偶回文的“中心下标”取右侧字符位置。
 
-\texttt{is\_pal(l,r)} 可在 $O(1)$ 内判断闭区间 $[l,r]$ 是否为回文。最长回文子串可分别枚举所有 \texttt{odd[i]} 与 \texttt{even[i]} 取最大长度，并由中心和半径恢复左右端点。
+字符串位置为 $0\ldots n-1$。\texttt{is\_pal(l,r)} 可在 $O(1)$ 内判断闭区间 $[l,r]$ 是否为回文。最长回文子串可分别枚举所有 \texttt{odd[i]} 与 \texttt{even[i]} 取最大长度，并由中心和半径恢复左右端点。

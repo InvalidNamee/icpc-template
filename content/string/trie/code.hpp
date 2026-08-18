@@ -1,5 +1,3 @@
-using ll = long long;
-
 struct Trie {
     vector<array<int, 26>> ch{{}};
     vector<int> pass{0}, term{0};
@@ -14,8 +12,8 @@ struct Trie {
     void insert(const string& s) {
         int u = 0;
         pass[u]++;
-        for (int i = 1; i < (int)s.size(); i++) {
-            int c = s[i] - 'a';
+        for (char x : s) {
+            int c = x - 'a';
             if (!ch[u][c]) ch[u][c] = node();
             u = ch[u][c];
             pass[u]++;
@@ -25,8 +23,8 @@ struct Trie {
 
     int find(const string& s) {
         int u = 0;
-        for (int i = 1; i < (int)s.size(); i++) {
-            int c = s[i] - 'a';
+        for (char x : s) {
+            int c = x - 'a';
             if (!ch[u][c]) return -1;
             u = ch[u][c];
         }

@@ -48,7 +48,7 @@ struct LCT {
     }
 
     void splay(int x) {
-        static vi stk;
+        static vector<int> stk;
         stk.clear(); int u = x; stk.push_back(u);
         while (!isroot(u)) u = t[u].fa, stk.push_back(u);
         while (!stk.empty()) pushdown(stk.back()), stk.pop_back();

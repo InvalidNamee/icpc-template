@@ -1,15 +1,16 @@
 struct LCA {
-    const vvi& g;
-    vi dep, first, eul, lg;
-    vvi st;
+    const vector<vector<int>>& g;
+    vector<int> dep, first, eul, lg;
+    vector<vector<int>> st;
 
-    LCA(const vvi& g, int root = 1) : g(g), dep(g.size()), first(g.size()) {
+    LCA(const vector<vector<int>>& g, int root = 1)
+        : g(g), dep(g.size()), first(g.size()) {
         eul.push_back(0); // 欧拉序使用 1 下标
         dfs(root, 0);
         int m = (int)eul.size() - 1;
         lg.assign(m + 1, 0);
         for (int i = 2; i <= m; i++) lg[i] = lg[i / 2] + 1;
-        st.assign(lg[m] + 1, vi(m + 1));
+        st.assign(lg[m] + 1, vector<int>(m + 1));
         st[0] = eul;
         for (int k = 1; k < (int)st.size(); k++)
             for (int i = 1; i + (1 << k) - 1 <= m; i++) {

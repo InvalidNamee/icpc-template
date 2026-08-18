@@ -13,12 +13,12 @@ SAM 的每个状态 $v$ 代表若干个具有相同 \texttt{endpos} 集合的子
   \item \texttt{len} 是该状态代表串的最大长度，\texttt{link} 是后缀链接；
   \item \texttt{occ} 是状态内每个子串的出现次数；
   \item \texttt{first} 是该状态某次出现的右端点；长度为 $L$ 的代表串可恢复为 $[\texttt{first}-L+1,\texttt{first}]$；
-  \item \texttt{pref[i]} 是原串前缀 $s[1\ldots i]$ 对应的状态。
+  \item \texttt{pref[i]} 是原串前缀 $s[0\ldots i]$ 对应的状态。
 \end{itemize}
 
 \textbf{子串是否存在、出现多少次}
 
-待查串 $p$ 也要是 $1$ 下标。\texttt{walk(p)} 沿转移走完，返回 $-1$ 表示 $p$ 不是原串子串，否则返回其状态。\texttt{occurrences(p)} 直接返回出现次数，允许重叠。
+待查串 $p$ 直接传入普通字符串。\texttt{walk(p)} 沿转移走完，返回 $-1$ 表示 $p$ 不是原串子串，否则返回其状态。\texttt{occurrences(p)} 直接返回出现次数，允许重叠。
 
 如果给的是原串区间 $s[l\ldots r]$，少量询问可直接构造该串后调用 \texttt{walk}。大量区间询问时，从 \texttt{pref[r]} 沿后缀链接向上跳，找到满足
 \[
@@ -43,7 +43,7 @@ SAM 的每个状态 $v$ 代表若干个具有相同 \texttt{endpos} 集合的子
 
 \textbf{两个字符串的最长公共子串}
 
-先对第一个串构造 SAM，再调用 \texttt{lcs(t)} 扫描第二个串。返回结构包含 \texttt{len}，以及该公共子串在原串中的 $[l1,r1]$ 和在 $t$ 中的 $[l2,r2]$；不存在公共字符时五个值均为 $0$。
+先对第一个串构造 SAM，再调用 \texttt{lcs(t)} 扫描第二个串。返回结构包含 \texttt{len}，以及该公共子串在原串中的 $0$ 下标闭区间 $[l1,r1]$ 和在 $t$ 中的 $[l2,r2]$；不存在公共字符时长度为 $0$，四个端点均为 $-1$。
 
 多个字符串的最长公共子串：对第一个串建 SAM。对每个其余字符串扫描，求它在每个状态上能匹配到的最大长度，并沿后缀链接按 \texttt{len} 降序传播；对每个状态维护所有字符串结果的最小值，最后取最大值。
 

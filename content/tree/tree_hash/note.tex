@@ -1,20 +1,16 @@
-固定根后，从叶子向上计算：
+定义有向边方向上的子树哈希
 \[
-  h(u)=\operatorname{ID}\left(
-  \operatorname{sort}\{h(v):v\text{ 是 }u\text{ 的儿子}\}
-  \right).
+  h(u,p)=1+\sum_{v\in g[u],\,v\ne p}
+  \operatorname{mix}\bigl(h(v,u)\bigr)
+  \pmod{2^{64}}.
 \]
-叶子的儿子哈希序列为空。
-排序消除了儿子原有编号和邻接表顺序的影响；相同序列通过全局 \texttt{map} 得到相同整数编号。
+代码使用 \texttt{uint64\_t} 自然溢出，不需要手动取模。
+求和使儿子顺序无关，同时保留相同儿子出现的次数。
 
-\textbf{函数接口}
+代码块直接放在 \texttt{g} 建好之后。
+\texttt{dfs(u,p)} 返回以 $u$ 为根且不经过 $p$ 的子树哈希；整棵树以
+\texttt{root} 为根的哈希就是 \texttt{dfs(root,0)}。
 
-\begin{itemize}
-  \item \texttt{tree\_hash(g,u,p=0)}：返回以 $u$ 为根、不经过父亲 $p$ 的有根树编号；一般直接传 \texttt{tree\_hash(g,root)}。
-  \item \texttt{tree\_id.clear()}：开始一批互相比较的树之前调用一次；这一批树计算过程中不能清空。
-\end{itemize}
-
-两棵有根树同构，当且仅当根的编号相同。
-比较无根树时，先分别找到一个或两个重心，以每个重心为根计算编号，再排序比较这两个长度为 $1$ 或 $2$ 的编号数组。
-
-这里的 \texttt{map<vector<int>,int>} 是树形离散化，不是概率哈希，所以没有随机碰撞；若需要对每个根计算答案，应改用换根哈希。
+每个儿子哈希先异或随机盐，经过三步 xorshift 后再异或一次盐。
+同一次程序运行中的盐相同，因此可以直接比较多棵树；重新运行后哈希值通常会改变。
+该方法单次 DFS 为 $O(n)$，属于概率哈希，理论上可能碰撞。
