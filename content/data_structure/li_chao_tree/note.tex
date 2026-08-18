@@ -1,0 +1,10 @@
+直线写成 $y=kx+b$。每个结点保存一条在区间中点处最优的直线，另一条直线只需递归到仍可能反超的一侧。
+
+\texttt{add\_line(k,b)} 在整个定义域加入直线；
+\texttt{add\_segment(l,r,k,b)} 只在闭区间 $[l,r]$ 加入；
+\texttt{query(x)} 查询最大值。查询点必须位于建树时给定的定义域内；若该点没有任何有效直线，返回 \texttt{NEG}。
+
+\begin{icpcwarning}[数值范围]
+  比较和返回值直接使用 \texttt{long long}。若 $kx+b$ 可能溢出，应把
+  \texttt{Line::get}、比较临时量和查询返回值统一改为 \texttt{\_\_int128}。
+\end{icpcwarning}

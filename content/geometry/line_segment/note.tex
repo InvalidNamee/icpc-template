@@ -1,0 +1,5 @@
+整数线段相交使用叉积符号判断，并显式处理端点接触、共线重叠和退化为点的线段。
+\texttt{on\_segment(p,a,b)} 包含线段端点，\texttt{segment\_intersect(a,b,c,d)} 也把边界接触视为相交。
+
+浮点直线用点向式 \(p+t v\) 表示。
+调用 \texttt{line\_intersection(p,v,q,w)} 前，应保证 \(cross(v,w)\ne0\)。

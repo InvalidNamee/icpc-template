@@ -9,10 +9,10 @@
 
 ## 新增模块
 
-假设要新增 `graph/max-flow`：
+假设要新增 `graph/max_flow`：
 
 ```text
-content/graph/max-flow/
+content/graph/max_flow/
   module.tex
   note.tex
   code.hpp       # 没有代码时可以省略
@@ -21,7 +21,7 @@ content/graph/max-flow/
 在 `content/graph/chapter.tex` 中加入：
 
 ```latex
-\ICPCIncludeModule{content/graph/max-flow}
+\ICPCIncludeModule{content/graph/max_flow}
 ```
 
 `module.tex` 建议保持很短，只负责声明模块并组装文件：

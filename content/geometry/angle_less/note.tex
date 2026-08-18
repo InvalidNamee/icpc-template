@@ -1,0 +1,9 @@
+整数点使用 \texttt{Point}，叉积、点积和距离平方返回 \texttt{\_\_int128}，避免坐标乘法溢出。
+浮点运算使用 \texttt{DPoint} 和 \texttt{dsign()}；涉及除法、三角函数和直线交点时不要直接比较浮点数是否相等。
+
+\texttt{angle\_less(a,b)} 按 \([0,2\pi)\) 的极角排序，正 \(x\) 轴方向最小；同方向时较短向量在前。
+
+\begin{icpcwarning}[零向量]
+  极角比较不定义零向量的位置，排序前应单独删除或处理零向量。
+  其他几何模块默认本模块中的 \texttt{Point}、\texttt{DPoint} 和基础运算已经存在。
+\end{icpcwarning}

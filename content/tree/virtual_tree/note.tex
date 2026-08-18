@@ -1,0 +1,15 @@
+构造 \texttt{VirtualTree T(g,root)} 后，调用 \texttt{T.build(key)} 即可建立包含所有关键点的最小虚树，并返回虚树根。
+模板会把相邻关键点的 LCA 加入节点集合，再按 DFS 序用栈连边。
+
+构建完成后，\texttt{T.nodes} 保存本次虚树中的全部节点，数量不超过 \(2k-1\)。
+\texttt{T.vt[u]} 保存 \(u\) 在虚树中的儿子；虚树边 \(u\to v\) 对应原树路径长度 \(dep[v]-dep[u]\)。
+
+\begin{icpcresult}[多次构建]
+  每次调用 \texttt{build()} 都会只清空上一次使用过的虚树节点，因此总清空复杂度与虚树大小同阶。
+  传入的关键点可以重复，模板会自动去重。
+\end{icpcresult}
+
+\begin{icpcwarning}[是否加入原树根]
+  模板默认构造关键点的最小虚树，不会强制加入原树根。
+  如果后续 DP 必须从原树根开始，应在调用前把根节点加入 \texttt{key}。
+\end{icpcwarning}
