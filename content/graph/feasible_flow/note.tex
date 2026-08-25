@@ -10,6 +10,8 @@ $t\to s$ 的无限容量边。
 超级源的所有边都被满足时，可行流存在。
 建边用 \texttt{add(u,v,l,r)}，最后调用 \texttt{ok()}；有源汇时调用 \texttt{ok(s,t)}。
 
+\textbf{编号约定：}原图顶点统一使用 $1$-based 编号 $1,2,\ldots,n$；\texttt{add} 返回的原边编号也是 $1$-based。残量图邻接表位置仅供内部使用，为 $0$-based 下标。
+
 \textbf{找一组可行解：}每次 \texttt{add} 返回该原边的编号，编号也就是加入顺序（从 $1$ 开始）。若 \texttt{ok} 返回 \texttt{true}，第 $i$ 条原边的实际流量为 \texttt{get(i)}。
 
 模板记录了原边对应的残量边位置。若原边上界为 $r$，算法结束后正向残量为 $c$，则

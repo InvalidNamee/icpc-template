@@ -1,13 +1,14 @@
 using ll = long long;
 
 struct Euler {
+    // 顶点编号：1..n（1-based）；边编号 id 为内部 0-based 编号
     struct E { int v, id; };
 
     int n, m = 0;
     vector<vector<E>> g;
     vector<int> vis, cur, ans;
 
-    Euler(int n) : n(n), g(n), cur(n) {}
+    Euler(int n) : n(n), g(n + 1), cur(n + 1) {}
 
     void add(int u, int v) { g[u].push_back({v, m++}); }
 

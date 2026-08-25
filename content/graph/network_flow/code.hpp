@@ -1,6 +1,7 @@
 using ll = long long;
 
 struct Dinic {
+    // 顶点编号：1..n（1-based）；邻接表位置 r 为内部 0-based 下标
     struct E {
         int v, r;
         ll c;
@@ -10,7 +11,7 @@ struct Dinic {
     vector<vector<E>> g;
     vector<int> dep, cur;
 
-    Dinic(int n) : n(n), g(n), dep(n), cur(n) {}
+    Dinic(int n) : n(n), g(n + 1), dep(n + 1), cur(n + 1) {}
 
     void add(int u, int v, ll c) {
         E a{v, (int) g[v].size(), c};

@@ -1,6 +1,7 @@
 using ll = long long;
 
 struct BFlow {
+    // 原图顶点编号：1..n（1-based）；原边编号：1..m（1-based）
     struct R { int u, p; ll r; };
 
     int n;
@@ -8,7 +9,7 @@ struct BFlow {
     vector<ll> b;
     vector<R> e;
 
-    BFlow(int n) : n(n), d(n + 3), b(n + 1), e(1) {}
+    BFlow(int n) : n(n), d(n + 2), b(n + 1), e(1) {}
 
     int add(int u, int v, ll l, ll r) {
         int id = e.size();

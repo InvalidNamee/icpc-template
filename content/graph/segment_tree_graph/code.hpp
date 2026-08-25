@@ -1,6 +1,7 @@
 using ll = long long;
 
 struct SegGraph {
+    // 对外的原图顶点和闭区间均为 1-based；扩展图编号仅供内部使用
     struct E { int v; ll w; };
     int n, s = 1, o;
     vector<vector<E>> g;
