@@ -1,0 +1,10 @@
+每个结点同时维护最大值、严格次大值、最大值个数，以及最小值、严格次小值、最小值个数。
+当 $x$ 严格大于次大值时，区间 \texttt{chmin(x)} 只会修改所有最大值；\texttt{chmax(x)} 同理。
+
+接口为 \texttt{add(l,r,x)}、\texttt{chmin(l,r,x)}、\texttt{chmax(l,r,x)}，以及
+\texttt{query\_sum/min/max(l,r)}。构造时传入非空 \texttt{vector<ll>}。
+
+\begin{icpcwarning}[数值范围]
+  \texttt{INF} 只用作不存在的次值哨兵。输入、修改量、实际元素和区间和都应远离
+  $\pm2^{60}$，并保证运算不溢出 \texttt{ll}。
+\end{icpcwarning}

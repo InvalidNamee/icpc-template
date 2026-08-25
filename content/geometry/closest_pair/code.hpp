@@ -15,7 +15,7 @@ struct ClosestPair {
         }
 
         int m = (l + r) / 2;
-        long long midx = p[m].x;
+        ll midx = p[m].x;
         __int128 ans = min(solve(l, m), solve(m, r));
         merge(p.begin() + l, p.begin() + m,
               p.begin() + m, p.begin() + r, tmp.begin() + l,

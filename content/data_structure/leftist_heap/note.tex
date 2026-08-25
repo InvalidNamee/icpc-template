@@ -1,0 +1,5 @@
+\texttt{merge(x,y)} 返回合并后的新根，原来的两个根不应再分别使用。
+\texttt{push(root,v)} 和 \texttt{pop(root)} 会直接更新根编号。
+
+模板参数 \texttt{Cmp} 控制堆顶：默认 \texttt{less<T>} 为小根堆，改成 \texttt{greater<T>} 即为大根堆。
+模板不是可持久化结构；若需要保留旧版本，合并时必须复制沿途结点。

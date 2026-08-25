@@ -1,6 +1,8 @@
+using ll = long long;
+
 struct WeightedDSU {
   vector<int> fa;
-  vector<long long> dis;
+  vector<ll> dis;
 
   explicit WeightedDSU(int n) : fa(n), dis(n) {
     iota(fa.begin(), fa.end(), 0);
@@ -15,7 +17,7 @@ struct WeightedDSU {
   }
 
   // 添加约束 value[y] - value[x] = w。
-  bool merge(int x, int y, long long w) {
+  bool merge(int x, int y, ll w) {
     int fx = find(x), fy = find(y);
     if (fx == fy) return dis[y] - dis[x] == w;
     fa[fy] = fx;
@@ -28,7 +30,7 @@ struct WeightedDSU {
   }
 
   // 调用前保证 x、y 连通。
-  long long query(int x, int y) {
+  ll query(int x, int y) {
     find(x);
     find(y);
     return dis[y] - dis[x];

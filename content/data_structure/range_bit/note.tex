@@ -1,0 +1,7 @@
+对差分数组维护两棵树状数组。设差分为 $d_i$，则前缀和可写成
+\[
+  \sum_{i=1}^{x}a_i=(x+1)\sum_{i=1}^{x}d_i-\sum_{i=1}^{x}i d_i.
+\]
+
+\texttt{add(l,r,v)} 给闭区间 $[l,r]$ 加 $v$；\texttt{query(l,r)} 返回闭区间和。
+初始化非零数组时，可逐点调用 \texttt{add(i,i,a[i])}。

@@ -1,7 +1,9 @@
+using ll = long long;
+
 struct LineHull {
     struct Line {
-        long long k, b;
-        long long get(long long x) const { return k * x + b; }
+        ll k, b;
+        ll get(ll x) const { return k * x + b; }
     };
 
     vector<Line> q;
@@ -11,7 +13,7 @@ struct LineHull {
                (__int128)(b.b - c.b) * (b.k - a.k);
     }
 
-    void add(long long k, long long b) {
+    void add(ll k, ll b) {
         Line nw{k, b};
         if (!q.empty() && q.back().k == k) {
             if (q.back().b >= b) return;
@@ -22,7 +24,7 @@ struct LineHull {
         q.push_back(nw);
     }
 
-    long long query(long long x) const {
+    ll query(ll x) const {
         int l = 0, r = (int)q.size() - 1;
         while (l < r) {
             int m = (l + r) / 2;

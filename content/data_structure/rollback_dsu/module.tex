@@ -1,0 +1,6 @@
+\ICPCModule{可撤销并查集}
+\ICPCMeta{维护对象}{只合并不拆分的连通块，并可回退到任意历史快照。}
+\ICPCMeta{复杂度}{按大小合并后查找、合并为 $O(\log n)$；单次撤销 $O(1)$。}
+\ICPCMeta{默认约定}{结点编号为 $1\sim n$，不能使用路径压缩。}
+\ICPCNote
+\ICPCCode[Rollback DSU]{code.hpp}

@@ -18,8 +18,8 @@ int point_in_polygon(Point q, const vector<Point>& p) {
     return in ? 1 : -1;
 }
 
-long long lattice_boundary(const vector<Point>& p) {
-    long long b = 0;
+ll lattice_boundary(const vector<Point>& p) {
+    ll b = 0;
     for (int i = 0, n = p.size(); i < n; i++) {
         Point d = p[(i + 1) % n] - p[i];
         b += gcd(llabs(d.x), llabs(d.y));

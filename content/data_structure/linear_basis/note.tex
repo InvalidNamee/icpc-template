@@ -1,0 +1,11 @@
+\texttt{insert(x)} 向线性基中插入向量；\texttt{check(x)} 判断 $x$ 是否与当前张成空间中的每个向量正交。
+\texttt{orthogonal\_complement()} 返回当前空间的正交补线性基，维数满足
+\[
+  \dim V+\dim V^\perp=32.
+\]
+\texttt{merge(t)} 返回两个张成空间之和，不修改原线性基。
+
+\begin{icpcwarning}[含义区分]
+  \texttt{check(x)} 是正交检验，不是判断 $x$ 能否被当前线性基表示。
+  零向量插入后不会改变线性基。
+\end{icpcwarning}

@@ -1,9 +1,11 @@
+using ll = long long;
+
 struct Point {
-    long long x = 0, y = 0;
+    ll x = 0, y = 0;
 
     Point operator+(const Point& p) const { return {x + p.x, y + p.y}; }
     Point operator-(const Point& p) const { return {x - p.x, y - p.y}; }
-    Point operator*(long long k) const { return {x * k, y * k}; }
+    Point operator*(ll k) const { return {x * k, y * k}; }
     bool operator==(const Point& p) const { return x == p.x && y == p.y; }
     bool operator<(const Point& p) const { return x != p.x ? x < p.x : y < p.y; }
 };

@@ -1,0 +1,10 @@
+\texttt{next\_u32/u64()} 和 \texttt{next\_i32/i64()} 分别生成对应位宽的随机整数。
+异或哈希通常直接给每种元素分配一个 \texttt{next\_u64()}，相同元素会贡献相同键。
+
+\texttt{random\_prime()} 在 $[2^{60},2^{61})$ 中随机寻找素数，可作为频率哈希的随机大模数。
+确定性 Miller--Rabin 使用一组覆盖全部 64 位整数的底数，乘法由 \texttt{\_\_uint128\_t} 防止溢出。
+
+\begin{icpcwarning}[随机哈希]
+  随机化只能把碰撞概率降得很低，不能提供绝对无碰撞保证。
+  若需要复现实验，构造 \texttt{RandomGenerator} 时显式传入固定种子。
+\end{icpcwarning}

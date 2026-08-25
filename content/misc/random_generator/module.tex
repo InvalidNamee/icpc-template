@@ -1,0 +1,6 @@
+\ICPCModule{随机数与随机大素数}
+\ICPCMeta{用途}{32/64 位随机数、异或哈希键和频率哈希所需的随机模数。}
+\ICPCMeta{复杂度}{生成随机数 $O(1)$；生成 61 位素数的期望复杂度约为 $O(\log^4 P)$。}
+\ICPCMeta{默认约定}{使用 SplitMix64；素性检验对 64 位无符号整数确定正确。}
+\ICPCNote
+\ICPCCode[SplitMix64 与 Miller--Rabin]{code.hpp}
