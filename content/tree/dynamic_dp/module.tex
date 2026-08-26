@@ -1,0 +1,6 @@
+\ICPCModule{动态 DP（最大权反链）}
+\ICPCMeta{维护对象}{有根树单点改权，维护任意两点互非祖先的点集最大权值和。}
+\ICPCMeta{复杂度}{预处理 $O(n)$；单次修改 $O(\log^2 n)$；全树答案 $O(\log n)$。}
+\ICPCMeta{默认约定}{结点编号为 $1\sim n$，允许选择空集，初始权值和答案使用 \texttt{ll}。}
+\ICPCNote
+\ICPCCode[重链剖分与矩阵线段树]{code.hpp}

@@ -1,0 +1,20 @@
+令 $f_x$ 表示 $x$ 子树内最大权反链的权值，转移为
+\[
+  f_x=\max\left(w_x,\sum_{y\in son(x)}f_y\right).
+\]
+选择 $x$ 后不能再选择其后代；不选择 $x$ 时，各儿子子树可以独立取最优解。
+模板允许空集，因此所有权值为负时答案为 $0$。
+
+对每个结点维护轻儿子贡献
+\[
+  g_x=\sum_{y\text{ 是 }x\text{ 的轻儿子}}f_y,
+\]
+再用 max-plus 矩阵表示重链上的转移。单点改权后，每次只会改变当前重链链头父亲的一项轻儿子贡献，沿链头向根跳转即可。
+
+先调用 \texttt{add\_edge()} 和 \texttt{set\_weight()}，再调用 \texttt{build(root)}。
+\texttt{modify(x,v)} 修改权值并返回整棵树的新答案；\texttt{answer()} 只查询当前答案。
+
+\begin{icpcwarning}[适用的 DP]
+  这是转移 $f_x=\max(w_x,\sum f_y)$ 的专用动态 DP，不是普通树上相邻点不能同时选择的最大权独立集。
+  两次 \texttt{build()} 之间不要修改树的边；递归深度较大时需注意系统栈限制。
+\end{icpcwarning}
