@@ -57,6 +57,64 @@ NTT 在有限域上计算普通卷积。
 \texttt{poly\_exp(f)} 返回 $\exp F(x)\bmod x^n$，其中 $n$ 是 \texttt{f.size()}，要求 $f_0=0$。
 三个函数均返回长度恰好为 $n$ 的系数数组，复杂度均为 $O(n\log n)$。
 
+\subsubsection{常用系数提取与筛选}
+
+\textbf{有上界的插板法}
+
+方程
+\[
+  x_1+x_2+\cdots+x_N=S,
+  \qquad 0\le x_i\le M
+\]
+的非负整数解数量为
+\[
+  \sum_{j=0}^{\left\lfloor S/(M+1)\right\rfloor}
+  (-1)^j
+  \binom Nj
+  \binom{S-j(M+1)+N-1}{N-1}.
+\]
+约定二项式参数越界时其值为 $0$，因此也可以把求和上界写成 $N$。
+它来自生成函数
+\[
+  (1+x+\cdots+x^M)^N
+  =\frac{(1-x^{M+1})^N}{(1-x)^N}
+\]
+中 $x^S$ 的系数：先展开分子，再对分母使用
+\[
+  [x^k](1-x)^{-N}=\binom{k+N-1}{N-1}.
+\]
+更一般地，看到 $x_1+\cdots+x_N=S$ 且所有变量都有相同上界
+$0\le x_i\le U$，直接在上式中把 $M$ 换成 $U$。
+
+\textbf{奇偶筛与单位根筛}
+
+对任意形式幂级数
+\[
+  F(x)=\sum_{n\ge0}a_nx^n,
+\]
+偶数次项和奇数次项分别为
+\[
+  F_{\mathrm{even}}(x)=\frac{F(x)+F(-x)}2,
+  \qquad
+  F_{\mathrm{odd}}(x)=\frac{F(x)-F(-x)}2.
+\]
+特别地，对指数生成函数 $e^x$ 有
+\[
+  \sum_{\substack{n\ge0\\n\text{ 为偶数}}}\frac{x^n}{n!}
+  =\frac{e^x+e^{-x}}2,
+  \qquad
+  \sum_{\substack{n\ge0\\n\text{ 为奇数}}}\frac{x^n}{n!}
+  =\frac{e^x-e^{-x}}2.
+\]
+
+若要保留下标满足 $n\equiv r\pmod m$ 的项，取一个本原 $m$ 次单位根
+$\omega$，则单位根筛为
+\[
+  \sum_{\substack{n\ge0\\n\equiv r\pmod m}}a_nx^n
+  =\frac1m\sum_{j=0}^{m-1}\omega^{-rj}F(\omega^jx).
+\]
+在模意义下使用时，需要模数中存在本原 $m$ 次单位根，并且 $m$ 可逆。
+
 \subsubsection{指数公式}
 
 设 $c_n$ 是在 $n$ 个标号元素上构造一个连通块的方案数，$a_n$ 是构造任意个互不相交、顺序不计的连通块的方案数，其中 $a_0=1$。

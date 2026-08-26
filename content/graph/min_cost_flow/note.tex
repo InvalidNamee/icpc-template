@@ -2,5 +2,8 @@
 反向边费用为原边费用的相反数，因此允许撤销之前的流。
 
 建边用 \texttt{add(u,v,cap,cost)}；\texttt{flow(s,t)} 返回 \texttt{\{flow,cost\}}。
+
+\textbf{编号约定：}顶点统一使用 $1$-based 编号 $1,2,\ldots,n$；残量边位置仅在内部使用，为 $0$-based 下标。
+
 若只需要恰好 $K$ 单位流，增广到总流量达到 $K$ 后停止即可。
 当前代码用 SPFA，负费用边可以直接使用；若数据专门卡最短路，改用势能 + Dijkstra。

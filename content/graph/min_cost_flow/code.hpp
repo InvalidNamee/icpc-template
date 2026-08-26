@@ -1,6 +1,7 @@
 using ll = long long;
 
 struct MCMF {
+    // 顶点编号：1..n（1-based）；邻接表位置 r 为内部 0-based 下标
     struct E {
         int v, r;
         ll c, w;
@@ -9,7 +10,7 @@ struct MCMF {
     int n;
     vector<vector<E>> g;
 
-    MCMF(int n) : n(n), g(n) {}
+    MCMF(int n) : n(n), g(n + 1) {}
 
     void add(int u, int v, ll c, ll w) {
         E a{v, (int) g[v].size(), c, w};
@@ -21,8 +22,8 @@ struct MCMF {
     pair<ll, ll> flow(int s, int t) {
         const ll inf = numeric_limits<ll>::max() / 4;
         ll mf = 0, mc = 0;
-        vector<ll> d(n);
-        vector<int> in(n), pv(n), pe(n);
+        vector<ll> d(n + 1);
+        vector<int> in(n + 1), pv(n + 1), pe(n + 1);
         while (true) {
             fill(d.begin(), d.end(), inf);
             fill(in.begin(), in.end(), 0);

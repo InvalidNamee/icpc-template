@@ -1,11 +1,12 @@
 using ll = long long;
 
 struct Diff {
+    // 顶点编号：1..n（1-based）
     int n;
     vector<vector<pair<int, ll>>> g;
     vector<ll> d;
 
-    Diff(int n) : n(n), g(n), d(n) {}
+    Diff(int n) : n(n), g(n + 1), d(n + 1) {}
 
     // xv - xu <= w
     void add(int u, int v, ll w) {
@@ -14,9 +15,9 @@ struct Diff {
 
     bool run() {
         fill(d.begin(), d.end(), 0);
-        vector<int> in(n, 1), cnt(n);
+        vector<int> in(n + 1, 1), cnt(n + 1);
         queue<int> q;
-        for (int i = 0; i < n; i++) q.push(i);
+        for (int i = 1; i <= n; i++) q.push(i);
         while (!q.empty()) {
             int u = q.front();
             q.pop();

@@ -1,6 +1,7 @@
 using ll = long long;
 
 struct Tarjan {
+    // 顶点编号：1..n（1-based）；SCC 编号：1..sc（1-based）
     vector<vector<int>> g;
     vector<int> dfn, low, scc, stk;
     vector<bool> ins;

@@ -1,0 +1,20 @@
+设 $d$ 严格递增地存放 $m$ 的全部正约数，\texttt{ps} 存放 $m$ 的全部不同质因子，且 \texttt{f[i]} 对应约数 \texttt{d[i]}。
+若变换前
+\[
+  f(x)=\sum_{x\mid y\mid m}g(y),
+\]
+调用 \texttt{mob(d,ps,f)} 后就有 $f(x)=g(x)$。
+这相当于在 $m$ 的约数格上原地执行 Möbius 反演。
+
+对每个质因子 $p$，模板枚举所有满足 $xp\mid m$ 的约数 $x$，执行
+\[
+  f(x)\mathrel{-}=f(xp).
+\]
+由于 \texttt{d} 严格递增，$x$ 也递增，指针 \texttt{j} 对每个 $p$ 只会单调前进，所以总复杂度为 $O(\lvert ps\rvert\lvert d\rvert)$。
+
+\textbf{编号约定：}\texttt{d} 和 \texttt{f} 都是 $0$-based 数组，合法下标为 $0,1,\ldots,n-1$；\texttt{d[i]} 保存的约数值本身不是编号。
+
+\begin{icpcwarning}
+\texttt{d} 必须非空，并且恰好包含 $m=\texttt{d.back()}$ 的全部正约数；\texttt{ps} 必须恰好包含 $m$ 的全部不同质因子；\texttt{f.size()} 必须等于 \texttt{d.size()}。
+不满足这些条件时，单调指针可能找不到 $x p$，结果无效甚至越界。
+\end{icpcwarning}
