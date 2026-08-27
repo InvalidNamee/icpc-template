@@ -1,0 +1,75 @@
+设 $(S,\oplus,\otimes)$ 是半环，$0_S$ 是 $\oplus$ 的单位元及 $\otimes$ 的吸收元，$1_S$ 是 $\otimes$ 的单位元：
+\[
+  a\oplus0_S=a,\qquad a\otimes1_S=1_S\otimes a=a,
+  \qquad a\otimes0_S=0_S\otimes a=0_S.
+\]
+广义矩阵乘法定义为
+\[
+  (AB)_{ij}=\bigoplus_k A_{ik}\otimes B_{kj}.
+\]
+矩阵零元是所有位置均为 $0_S$ 的零矩阵；单位矩阵为
+\[
+  I_{ij}=\begin{cases}1_S&i=j,\\0_S&i\ne j.\end{cases}
+\]
+半环的结合律和分配律保证矩阵乘法满足结合律，因此仍可使用矩阵快速幂和线段树维护矩阵积。
+
+\subsubsection*{普通矩阵：sum-product}
+\[
+  \oplus=+,\qquad \otimes=\times,\qquad 0_S=0,\qquad1_S=1,
+\]
+\[
+  O_{ij}=0,\qquad
+  I_{ij}=\begin{cases}1&i=j,\\0&i\ne j.\end{cases}
+\]
+$A^k_{ij}$ 常用于表示长度为 $k$ 的路径计数或线性递推系数；若在模环上运算，所有加法和乘法均取模。
+
+\subsubsection*{min-plus 矩阵}
+\[
+  \oplus=\min,\qquad \otimes=+,\qquad 0_S=+\infty,\qquad1_S=0,
+\]
+\[
+  (AB)_{ij}=\min_k(A_{ik}+B_{kj}),\qquad
+  O_{ij}=+\infty,\qquad
+  I_{ij}=\begin{cases}0&i=j,\\+\infty&i\ne j.\end{cases}
+\]
+若 $A_{ij}$ 是一步转移代价，则 $A^k_{ij}$ 是恰好经过 $k$ 步的最小代价；把对角线设为 $0$ 可以允许用自环补足步数。
+
+\subsubsection*{max-plus 矩阵}
+\[
+  \oplus=\max,\qquad \otimes=+,\qquad 0_S=-\infty,\qquad1_S=0,
+\]
+\[
+  (AB)_{ij}=\max_k(A_{ik}+B_{kj}),\qquad
+  O_{ij}=-\infty,\qquad
+  I_{ij}=\begin{cases}0&i=j,\\-\infty&i\ne j.\end{cases}
+\]
+用于最大权路径和最大化 DP。不可达状态必须写成 $-\infty$，参与转移前要避免与有限值相加造成溢出。
+
+\subsubsection*{max-min 矩阵}
+\[
+  \oplus=\max,\qquad \otimes=\min,\qquad
+  0_S=-\infty,\qquad1_S=+\infty,
+\]
+\[
+  (AB)_{ij}=\max_k\min(A_{ik},B_{kj}),\qquad
+  O_{ij}=-\infty,\qquad
+  I_{ij}=\begin{cases}+\infty&i=j,\\-\infty&i\ne j.\end{cases}
+\]
+若矩阵元素表示边容量，则乘法先取一条拼接路径上的瓶颈，再在所有中转点中选择最大瓶颈。
+
+\subsubsection*{布尔矩阵}
+\[
+  \oplus=\lor,\qquad \otimes=\land,\qquad
+  0_S=\mathrm{false},\qquad1_S=\mathrm{true},
+\]
+\[
+  (AB)_{ij}=\bigvee_k(A_{ik}\land B_{kj}),\qquad
+  O_{ij}=\mathrm{false},\qquad
+  I_{ij}=[i=j].
+\]
+$A^k_{ij}$ 表示是否存在恰好 $k$ 步从 $i$ 到 $j$ 的路径；加入单位矩阵后可表示不超过 $k$ 步的可达性。
+
+\begin{icpcwarning}[无穷与单位阵]
+  $\pm\infty$ 在代码中通常用足够大的正负哨兵表示。
+  max-min 的对角元是 $+\infty$，不是 $0$；min/max-plus 的对角元才是 $0$。
+\end{icpcwarning}

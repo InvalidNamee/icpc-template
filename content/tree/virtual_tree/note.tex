@@ -1,15 +1,25 @@
-构造 \texttt{VirtualTree T(g,root)} 后，调用 \texttt{T.build(key)} 即可建立包含所有关键点的最小虚树，并返回虚树根。
-模板会把相邻关键点的 LCA 加入节点集合，再按 DFS 序用栈连边。
+原树邻接表类型为 \texttt{vector<vector<Edge>>}，其中
+\texttt{Edge=pair<ll,int>}，按 \texttt{\{边权,终点\}} 存边。
+构造 \texttt{VirtualTree T(g,root)} 后，调用 \texttt{T.build(key)} 建立包含所有关键点的最小虚树，并返回虚树根。
 
-构建完成后，\texttt{T.nodes} 保存本次虚树中的全部节点，数量不超过 \(2k-1\)。
-\texttt{T.vt[u]} 保存 \(u\) 在虚树中的儿子；虚树边 \(u\to v\) 对应原树路径长度 \(dep[v]-dep[u]\)。
+模板只排序一次关键点，再在线插入 LCA、弹栈并连边。
+\texttt{T.vt[u]} 的元素也是 \texttt{\{权值,v\}}，虚树边权为原树路径权值和
+\[
+  dis[v]-dis[u].
+\]
+\texttt{dist(u,v)} 返回原树两点间路径权值和。
 
 \begin{icpcresult}[多次构建]
-  每次调用 \texttt{build()} 都会只清空上一次使用过的虚树节点，因此总清空复杂度与虚树大小同阶。
-  传入的关键点可以重复，模板会自动去重。
+  \texttt{nodes}、\texttt{stk} 和 \texttt{buf} 会跨询问复用容量；每次只清空上一次虚树涉及的邻接表。
+  关键点允许重复，模板会自动去重，虚树节点数量不超过 $2k-1$。
 \end{icpcresult}
 
-\begin{icpcwarning}[是否加入原树根]
-  模板默认构造关键点的最小虚树，不会强制加入原树根。
-  如果后续 DP 必须从原树根开始，应在调用前把根节点加入 \texttt{key}。
+\begin{icpcwarning}[nodes 顺序]
+  为省去恢复 DFS 序的额外遍历，\texttt{nodes} 只保证包含本次虚树的全部节点，不保证 DFS 序或拓扑序。
+  需要树形 DP 时应从 \texttt{build()} 返回的根沿 \texttt{vt} 遍历。
+\end{icpcwarning}
+
+\begin{icpcwarning}[根与数值范围]
+  模板不会自动加入原树根；若 DP 必须从原树根开始，应把它加入关键点。
+  根路径权值和与虚树边权使用 \texttt{ll}，仍需保证加减法不溢出。
 \end{icpcwarning}
