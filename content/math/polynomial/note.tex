@@ -115,6 +115,45 @@ $\omega$，则单位根筛为
 \]
 在模意义下使用时，需要模数中存在本原 $m$ 次单位根，并且 $m$ 可逆。
 
+\textbf{EGF 二项式变换}
+
+指数函数的展开式为
+\[
+  e^x=\sum_{n\ge0}\frac{x^n}{n!},
+  \qquad
+  e^{-x}=\sum_{n\ge0}(-1)^n\frac{x^n}{n!}.
+\]
+设
+\[
+  A(x)=\sum_{n\ge0}a_n\frac{x^n}{n!},
+  \qquad
+  B(x)=\sum_{n\ge0}b_n\frac{x^n}{n!}.
+\]
+则二项式变换等价于 EGF 乘 $e^x$：
+\[
+  \boxed{
+    b_n=\sum_{k=0}^n\binom nk a_k
+    \quad\Longleftrightarrow\quad
+    B(x)=e^xA(x)
+  }.
+\]
+因为
+\[
+  n![x^n]\,A(x)e^x
+  =n!\sum_{k=0}^n\frac{a_k}{k!(n-k)!}
+  =\sum_{k=0}^n\binom nk a_k.
+\]
+乘 $e^{-x}$ 即得逆变换：
+\[
+  \boxed{
+    a_n=\sum_{k=0}^n(-1)^{n-k}\binom nk b_k
+    \quad\Longleftrightarrow\quad
+    A(x)=e^{-x}B(x)
+  }.
+\]
+用 NTT 计算正向变换时卷积 $a_i/i!$ 与 $1/i!$；计算逆变换时卷积
+$b_i/i!$ 与 $(-1)^i/i!$。卷积后把第 $i$ 项乘 $i!$ 即得答案。
+
 \subsubsection{指数公式}
 
 设 $c_n$ 是在 $n$ 个标号元素上构造一个连通块的方案数，$a_n$ 是构造任意个互不相交、顺序不计的连通块的方案数，其中 $a_0=1$。
