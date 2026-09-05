@@ -39,7 +39,8 @@ struct VirtualTree {
             for (int j = 1; j < lg; j++)
                 U(u, j) = U(U(u, j - 1), j - 1);
             st.push_back(-u);
-            for (auto it = g[u].rbegin(); it != g[u].rend(); it++) {
+            for (auto it = g[u].rbegin();
+                 it != g[u].rend(); it++) {
                 auto [w, v] = *it;
                 if (v == par[u]) continue;
                 par[v] = u;
@@ -81,8 +82,10 @@ struct VirtualTree {
 
         int k = key.size();
         if ((int)buf.capacity() < k) buf.reserve(k);
-        if ((int)nodes.capacity() < k * 2) nodes.reserve(k * 2);
-        if ((int)stk.capacity() < k * 2) stk.reserve(k * 2);
+        if ((int)nodes.capacity() < k * 2)
+            nodes.reserve(k * 2);
+        if ((int)stk.capacity() < k * 2)
+            stk.reserve(k * 2);
         for (auto u : key) buf.push_back((int)u);
         sort(buf.begin(), buf.end(), [&](int u, int v) {
             return tin[u] < tin[v];
@@ -93,7 +96,8 @@ struct VirtualTree {
         nodes.push_back(buf[0]);
         for (int i = 1; i < (int)buf.size(); i++) {
             int u = buf[i], p = lca(u, stk.back());
-            while (stk.size() >= 2 && dep[stk[stk.size() - 2]] >= dep[p]) {
+            while (stk.size() >= 2 &&
+                   dep[stk[stk.size() - 2]] >= dep[p]) {
                 link(stk[stk.size() - 2], stk.back());
                 stk.pop_back();
             }

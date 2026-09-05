@@ -13,7 +13,10 @@ struct SparseTable {
         st[0] = a;
         for (int j = 1; j < m; j++)
             for (int i = 0; i + (1 << j) <= n; i++)
-                st[j][i] = op(st[j - 1][i], st[j - 1][i + (1 << (j - 1))]);
+                st[j][i] = op(
+                    st[j - 1][i],
+                    st[j - 1][i + (1 << (j - 1))]
+                );
     }
 
     T query(int l, int r) const {

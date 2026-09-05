@@ -59,7 +59,8 @@ struct SAM {
         for (auto &x : st) cnt[x.len]++;
         for (int i = 1; i <= mx; i++) cnt[i] += cnt[i - 1];
         order.resize(sz);
-        for (int v = sz - 1; v >= 0; v--) order[--cnt[st[v].len]] = v;
+        for (int v = sz - 1; v >= 0; v--)
+            order[--cnt[st[v].len]] = v;
 
         for (int i = sz - 1; i > 0; i--) {
             int v = order[i];
@@ -142,8 +143,12 @@ struct SAM {
             if (len > best) best = len, end = i, state = u;
         }
         if (!best) return {0, -1, -1, -1, -1};
-        return {best, st[state].first - best + 1, st[state].first,
-                end - best + 1, end};
+        return {
+            best,
+            st[state].first - best + 1,
+            st[state].first,
+            end - best + 1, end
+        };
     }
 
     vector<vector<int>> link_tree() {

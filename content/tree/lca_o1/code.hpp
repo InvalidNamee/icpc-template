@@ -14,7 +14,10 @@ struct LCA {
         st[0] = eul;
         for (int k = 1; k < (int)st.size(); k++)
             for (int i = 1; i + (1 << k) - 1 <= m; i++) {
-                int x = st[k - 1][i], y = st[k - 1][i + (1 << (k - 1))];
+                int x = st[k - 1][i];
+                int y = st[k - 1][
+                    i + (1 << (k - 1))
+                ];
                 st[k][i] = dep[x] < dep[y] ? x : y;
             }
     }
@@ -30,7 +33,9 @@ struct LCA {
     int lca(int u, int v) const {
         int l = first[u], r = first[v];
         if (l > r) swap(l, r);
-        int k = lg[r - l + 1], x = st[k][l], y = st[k][r - (1 << k) + 1];
+        int k = lg[r - l + 1];
+        int x = st[k][l];
+        int y = st[k][r - (1 << k) + 1];
         return dep[x] < dep[y] ? x : y;
     }
 

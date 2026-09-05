@@ -10,8 +10,10 @@ struct StringHash {
     StringHash(const string& s) : n(s.size()), s(s),
         h1(n + 1), h2(n + 1), p1(n + 1, 1), p2(n + 1, 1) {
         for (int i = 0; i < n; i++) {
-            h1[i + 1] = (h1[i] * B + (unsigned char)s[i]) % M1;
-            h2[i + 1] = (h2[i] * B + (unsigned char)s[i]) % M2;
+            h1[i + 1] = (h1[i] * B +
+                         (unsigned char)s[i]) % M1;
+            h2[i + 1] = (h2[i] * B +
+                         (unsigned char)s[i]) % M2;
             p1[i + 1] = p1[i] * B % M1;
             p2[i + 1] = p2[i] * B % M2;
         }
@@ -29,7 +31,8 @@ struct StringHash {
         int lo = 0, hi = min({limit, n - i, n - j});
         while (lo < hi) {
             int m = (lo + hi + 1) / 2;
-            if (get(i, i + m - 1) == get(j, j + m - 1)) lo = m;
+            if (get(i, i + m - 1) ==
+                get(j, j + m - 1)) lo = m;
             else hi = m - 1;
         }
         return lo;
@@ -39,6 +42,7 @@ struct StringHash {
         int a = r1 - l1 + 1, b = r2 - l2 + 1;
         int k = lcp(l1, l2, min(a, b));
         if (k == min(a, b)) return (a > b) - (a < b);
-        return (s[l1 + k] > s[l2 + k]) - (s[l1 + k] < s[l2 + k]);
+        return (s[l1 + k] > s[l2 + k]) -
+               (s[l1 + k] < s[l2 + k]);
     }
 };

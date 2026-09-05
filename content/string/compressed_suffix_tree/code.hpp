@@ -3,15 +3,15 @@ struct SuffixTree {
         int par = -1; // 父结点
         int dep = 0;  // 根到该结点的字符串长度
         int rep = 0;  // 一个代表后缀的起点
-        int suf = -1; // 叶子对应的后缀起点，内部结点为 -1
-        int rank = -1; // 叶子对应的 SA 排名，内部结点为 -1
+        int suf = -1;  // 叶子的后缀起点，内部结点为 -1
+        int rank = -1; // 叶子的 SA 排名，内部结点为 -1
     };
 
     int n;
     string s;
     vector<int> sa, leaf;
-    vector<int> cnt, lo, hi; // 子树叶数、最小和最大 SA 排名
-    vector<int> mn, mx;      // 子树内最小和最大后缀起点
+    vector<int> cnt, lo, hi; // 叶数、最小/最大 SA 排名
+    vector<int> mn, mx;      // 最小/最大后缀起点
     vector<Node> t;
     vector<vector<int>> g;
 

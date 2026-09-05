@@ -8,9 +8,11 @@ struct ClosestPair {
             for (int i = l; i < r; i++)
                 for (int j = i + 1; j < r; j++)
                     ans = min(ans, norm2(p[i] - p[j]));
-            sort(p.begin() + l, p.begin() + r, [](Point a, Point b) {
-                return a.y != b.y ? a.y < b.y : a.x < b.x;
-            });
+            sort(p.begin() + l, p.begin() + r,
+                 [](Point a, Point b) {
+                     return a.y != b.y ?
+                         a.y < b.y : a.x < b.x;
+                 });
             return ans;
         }
 

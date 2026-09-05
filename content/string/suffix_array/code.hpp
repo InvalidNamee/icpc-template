@@ -13,7 +13,8 @@ struct SA {
         int m = 257;
         vector<int> x(n), y(n), c(max(n, m) + 1);
         sa.resize(n);
-        for (int i = 0; i < n; i++) x[i] = (unsigned char)s[i] + 1;
+        for (int i = 0; i < n; i++)
+            x[i] = (unsigned char)s[i] + 1;
         for (int i = 0; i < n; i++) c[x[i]]++;
         for (int i = 1; i < m; i++) c[i] += c[i - 1];
         for (int i = n - 1; i >= 0; i--) sa[--c[x[i]]] = i;
@@ -27,7 +28,8 @@ struct SA {
             fill(c.begin(), c.begin() + m, 0);
             for (int i = 0; i < n; i++) c[x[y[i]]]++;
             for (int i = 1; i < m; i++) c[i] += c[i - 1];
-            for (int i = n - 1; i >= 0; i--) sa[--c[x[y[i]]]] = y[i];
+            for (int i = n - 1; i >= 0; i--)
+                sa[--c[x[y[i]]]] = y[i];
 
             y = x;
             p = 1;
@@ -52,7 +54,8 @@ struct SA {
             int r = rk[i];
             if (!r) continue;
             int j = sa[r - 1];
-            while (i + k < n && j + k < n && s[i + k] == s[j + k]) k++;
+            while (i + k < n && j + k < n &&
+                   s[i + k] == s[j + k]) k++;
             height[r] = k;
             if (k) k--;
         }
@@ -80,7 +83,8 @@ struct SA {
         int a = r1 - l1 + 1, b = r2 - l2 + 1;
         int k = min({lcp(l1, l2), a, b});
         if (k == min(a, b)) return (a > b) - (a < b);
-        return (s[l1 + k] > s[l2 + k]) - (s[l1 + k] < s[l2 + k]);
+        return (s[l1 + k] > s[l2 + k]) -
+               (s[l1 + k] < s[l2 + k]);
     }
 
     int cmp_pat(int pos, const string& p) {
@@ -134,7 +138,9 @@ struct SA {
         deque<int> q;
         int ans = 0;
         for (int r = 1; r < n; r++) {
-            while (!q.empty() && height[q.back()] >= height[r]) q.pop_back();
+            while (!q.empty() &&
+                   height[q.back()] >= height[r])
+                q.pop_back();
             q.push_back(r);
             while (q.front() < r - k + 2) q.pop_front();
             if (r >= k - 1) ans = max(ans, height[q.front()]);

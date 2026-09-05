@@ -3,11 +3,19 @@ using ll = long long;
 struct Point {
     ll x = 0, y = 0;
 
-    Point operator+(const Point& p) const { return {x + p.x, y + p.y}; }
-    Point operator-(const Point& p) const { return {x - p.x, y - p.y}; }
+    Point operator+(const Point& p) const {
+        return {x + p.x, y + p.y};
+    }
+    Point operator-(const Point& p) const {
+        return {x - p.x, y - p.y};
+    }
     Point operator*(ll k) const { return {x * k, y * k}; }
-    bool operator==(const Point& p) const { return x == p.x && y == p.y; }
-    bool operator<(const Point& p) const { return x != p.x ? x < p.x : y < p.y; }
+    bool operator==(const Point& p) const {
+        return x == p.x && y == p.y;
+    }
+    bool operator<(const Point& p) const {
+        return x != p.x ? x < p.x : y < p.y;
+    }
 };
 
 __int128 dot(Point a, Point b) {
@@ -44,16 +52,26 @@ const long double GEPS = 1e-12L;
 struct DPoint {
     long double x = 0, y = 0;
 
-    DPoint operator+(const DPoint& p) const { return {x + p.x, y + p.y}; }
-    DPoint operator-(const DPoint& p) const { return {x - p.x, y - p.y}; }
-    DPoint operator*(long double k) const { return {x * k, y * k}; }
-    DPoint operator/(long double k) const { return {x / k, y / k}; }
+    DPoint operator+(const DPoint& p) const {
+        return {x + p.x, y + p.y};
+    }
+    DPoint operator-(const DPoint& p) const {
+        return {x - p.x, y - p.y};
+    }
+    DPoint operator*(long double k) const {
+        return {x * k, y * k};
+    }
+    DPoint operator/(long double k) const {
+        return {x / k, y / k};
+    }
 };
 
 int dsign(long double x) { return (x > GEPS) - (x < -GEPS); }
 long double dot(DPoint a, DPoint b) { return a.x * b.x + a.y * b.y; }
 long double cross(DPoint a, DPoint b) { return a.x * b.y - a.y * b.x; }
-long double cross(DPoint a, DPoint b, DPoint c) { return cross(b - a, c - a); }
+long double cross(DPoint a, DPoint b, DPoint c) {
+    return cross(b - a, c - a);
+}
 long double norm2(DPoint a) { return dot(a, a); }
 long double length(DPoint a) { return sqrtl(norm2(a)); }
 DPoint unit(DPoint a) { return a / length(a); }

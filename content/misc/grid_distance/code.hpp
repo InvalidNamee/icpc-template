@@ -8,10 +8,14 @@ struct GridDistance {
     }
 
     static ll manhattan(P a, P b) {
-        return llabs(a.first - b.first) + llabs(a.second - b.second);
+        return llabs(a.first - b.first) +
+               llabs(a.second - b.second);
     }
 
     static ll chebyshev(P a, P b) {
-        return max(llabs(a.first - b.first), llabs(a.second - b.second));
+        return max(
+            llabs(a.first - b.first),
+            llabs(a.second - b.second)
+        );
     }
 };

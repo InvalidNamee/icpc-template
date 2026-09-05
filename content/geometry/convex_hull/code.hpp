@@ -5,13 +5,15 @@ vector<Point> convex_hull(vector<Point> p) {
 
     vector<Point> lo, hi;
     for (Point x : p) {
-        while (lo.size() >= 2 && cross(lo[lo.size() - 2], lo.back(), x) <= 0)
+        while (lo.size() >= 2 &&
+               cross(lo[lo.size() - 2], lo.back(), x) <= 0)
             lo.pop_back();
         lo.push_back(x);
     }
     for (int i = (int)p.size() - 1; i >= 0; i--) {
         Point x = p[i];
-        while (hi.size() >= 2 && cross(hi[hi.size() - 2], hi.back(), x) <= 0)
+        while (hi.size() >= 2 &&
+               cross(hi[hi.size() - 2], hi.back(), x) <= 0)
             hi.pop_back();
         hi.push_back(x);
     }

@@ -14,13 +14,20 @@ vector<int> centroids(const vector<vector<int>>& g) {
 // 返回 {直径长度, 端点 a, 端点 b}
 array<int, 3> diameter(const vector<vector<int>>& g) {
     auto bfs = [&](int s) {
-        vector<int> d(g.size(), -1); queue<int> q; q.push(s); d[s] = 0;
+        vector<int> d(g.size(), -1);
+        queue<int> q;
+        q.push(s);
+        d[s] = 0;
         while (!q.empty()) {
             int u = q.front(); q.pop();
-            for (int v : g[u]) if (d[v] < 0) d[v] = d[u] + 1, q.push(v);
+            for (int v : g[u]) if (d[v] < 0) {
+                d[v] = d[u] + 1;
+                q.push(v);
+            }
         }
         int t = 1;
-        for (int i = 1; i < (int)g.size(); i++) if (d[i] > d[t]) t = i;
+        for (int i = 1; i < (int)g.size(); i++)
+            if (d[i] > d[t]) t = i;
         return pair<int, int>{t, d[t]};
     };
     int a = bfs(1).first;

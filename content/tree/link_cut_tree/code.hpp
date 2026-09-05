@@ -36,11 +36,15 @@ struct LCT {
 
     void pushdown(int x) {
         if (!t[x].rev) return;
-        reverse(t[x].ch[0]); reverse(t[x].ch[1]); t[x].rev = 0;
+        reverse(t[x].ch[0]);
+        reverse(t[x].ch[1]);
+        t[x].rev = 0;
     }
 
     void rotate(int x) {
-        int y = t[x].fa, z = t[y].fa, k = (t[y].ch[1] == x), w = t[x].ch[k ^ 1];
+        int y = t[x].fa, z = t[y].fa;
+        int k = (t[y].ch[1] == x);
+        int w = t[x].ch[k ^ 1];
         if (!isroot(y)) t[z].ch[t[z].ch[1] == y] = x;
         t[x].fa = z; t[x].ch[k ^ 1] = y; t[y].fa = x;
         t[y].ch[k] = w; if (w) t[w].fa = y;
@@ -49,19 +53,30 @@ struct LCT {
 
     void splay(int x) {
         static vector<int> stk;
-        stk.clear(); int u = x; stk.push_back(u);
+        stk.clear();
+        int u = x;
+        stk.push_back(u);
         while (!isroot(u)) u = t[u].fa, stk.push_back(u);
         while (!stk.empty()) pushdown(stk.back()), stk.pop_back();
         while (!isroot(x)) {
             int y = t[x].fa, z = t[y].fa;
-            if (!isroot(y)) rotate((t[y].ch[1] == x) == (t[z].ch[1] == y) ? y : x);
+            if (!isroot(y)) {
+                bool zigzig = (t[y].ch[1] == x) ==
+                              (t[z].ch[1] == y);
+                rotate(zigzig ? y : x);
+            }
             rotate(x);
         }
     }
 
     int access(int x) {
         int y = 0;
-        for (int u = x; u; u = t[u].fa) splay(u), t[u].ch[1] = y, pushup(u), y = u;
+        for (int u = x; u; u = t[u].fa) {
+            splay(u);
+            t[u].ch[1] = y;
+            pushup(u);
+            y = u;
+        }
         splay(x);
         return y;
     }
@@ -75,7 +90,11 @@ struct LCT {
         return x;
     }
 
-    bool connected(int u, int v) { return u == v || (makeroot(u), findroot(v) == u); }
+    bool connected(int u, int v) {
+        if (u == v) return true;
+        makeroot(u);
+        return findroot(v) == u;
+    }
 
     bool link(int u, int v) {
         makeroot(u);
@@ -93,7 +112,11 @@ struct LCT {
 
     void split(int u, int v) { makeroot(u); access(v); }
 
-    void set_value(int u, Info x) { access(u); t[u].val = x; pushup(u); }
+    void set_value(int u, Info x) {
+        access(u);
+        t[u].val = x;
+        pushup(u);
+    }
 
     Info query(int u, int v) { split(u, v); return t[v].fwd; }
 };

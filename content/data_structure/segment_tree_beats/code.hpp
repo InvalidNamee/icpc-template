@@ -4,7 +4,9 @@ struct SegmentTreeBeats {
     static constexpr ll INF = 1LL << 60;
 
     struct Node {
-        ll sum = 0, mx = -INF, smx = -INF, mn = INF, smn = INF, add = 0;
+        ll sum = 0, add = 0;
+        ll mx = -INF, smx = -INF;
+        ll mn = INF, smn = INF;
         int mxc = 0, mnc = 0;
     };
 
@@ -85,20 +87,28 @@ struct SegmentTreeBeats {
             apply_add(u * 2 + 1, r - m, tr[u].add);
             tr[u].add = 0;
         }
-        if (tr[u * 2].mx > tr[u].mx) apply_chmin(u * 2, tr[u].mx);
-        if (tr[u * 2 + 1].mx > tr[u].mx) apply_chmin(u * 2 + 1, tr[u].mx);
-        if (tr[u * 2].mn < tr[u].mn) apply_chmax(u * 2, tr[u].mn);
-        if (tr[u * 2 + 1].mn < tr[u].mn) apply_chmax(u * 2 + 1, tr[u].mn);
+        if (tr[u * 2].mx > tr[u].mx)
+            apply_chmin(u * 2, tr[u].mx);
+        if (tr[u * 2 + 1].mx > tr[u].mx)
+            apply_chmin(u * 2 + 1, tr[u].mx);
+        if (tr[u * 2].mn < tr[u].mn)
+            apply_chmax(u * 2, tr[u].mn);
+        if (tr[u * 2 + 1].mn < tr[u].mn)
+            apply_chmax(u * 2 + 1, tr[u].mn);
     }
 
-    void pull(int u) { tr[u] = merge_node(tr[u * 2], tr[u * 2 + 1]); }
+    void pull(int u) {
+        tr[u] = merge_node(tr[u * 2], tr[u * 2 + 1]);
+    }
 
     void add(int u, int l, int r, int ql, int qr, ll x) {
-        if (ql <= l && r <= qr) return apply_add(u, r - l + 1, x);
+        if (ql <= l && r <= qr)
+            return apply_add(u, r - l + 1, x);
         push(u, l, r);
         int m = (l + r) / 2;
         if (ql <= m) add(u * 2, l, m, ql, qr, x);
-        if (m < qr) add(u * 2 + 1, m + 1, r, ql, qr, x);
+        if (m < qr)
+            add(u * 2 + 1, m + 1, r, ql, qr, x);
         pull(u);
     }
 
@@ -109,7 +119,8 @@ struct SegmentTreeBeats {
         push(u, l, r);
         int m = (l + r) / 2;
         if (ql <= m) chmin(u * 2, l, m, ql, qr, x);
-        if (m < qr) chmin(u * 2 + 1, m + 1, r, ql, qr, x);
+        if (m < qr)
+            chmin(u * 2 + 1, m + 1, r, ql, qr, x);
         pull(u);
     }
 
@@ -120,7 +131,8 @@ struct SegmentTreeBeats {
         push(u, l, r);
         int m = (l + r) / 2;
         if (ql <= m) chmax(u * 2, l, m, ql, qr, x);
-        if (m < qr) chmax(u * 2 + 1, m + 1, r, ql, qr, x);
+        if (m < qr)
+            chmax(u * 2 + 1, m + 1, r, ql, qr, x);
         pull(u);
     }
 
@@ -129,8 +141,10 @@ struct SegmentTreeBeats {
         push(u, l, r);
         int m = (l + r) / 2;
         ll res = 0;
-        if (ql <= m) res += query_sum(u * 2, l, m, ql, qr);
-        if (m < qr) res += query_sum(u * 2 + 1, m + 1, r, ql, qr);
+        if (ql <= m)
+            res += query_sum(u * 2, l, m, ql, qr);
+        if (m < qr)
+            res += query_sum(u * 2 + 1, m + 1, r, ql, qr);
         return res;
     }
 
@@ -139,8 +153,12 @@ struct SegmentTreeBeats {
         push(u, l, r);
         int m = (l + r) / 2;
         ll res = INF;
-        if (ql <= m) res = min(res, query_min(u * 2, l, m, ql, qr));
-        if (m < qr) res = min(res, query_min(u * 2 + 1, m + 1, r, ql, qr));
+        if (ql <= m)
+            res = min(res, query_min(u * 2, l, m, ql, qr));
+        if (m < qr)
+            res = min(res, query_min(
+                u * 2 + 1, m + 1, r, ql, qr
+            ));
         return res;
     }
 
@@ -149,15 +167,31 @@ struct SegmentTreeBeats {
         push(u, l, r);
         int m = (l + r) / 2;
         ll res = -INF;
-        if (ql <= m) res = max(res, query_max(u * 2, l, m, ql, qr));
-        if (m < qr) res = max(res, query_max(u * 2 + 1, m + 1, r, ql, qr));
+        if (ql <= m)
+            res = max(res, query_max(u * 2, l, m, ql, qr));
+        if (m < qr)
+            res = max(res, query_max(
+                u * 2 + 1, m + 1, r, ql, qr
+            ));
         return res;
     }
 
-    void add(int l, int r, ll x) { add(1, 0, n - 1, l, r, x); }
-    void chmin(int l, int r, ll x) { chmin(1, 0, n - 1, l, r, x); }
-    void chmax(int l, int r, ll x) { chmax(1, 0, n - 1, l, r, x); }
-    ll query_sum(int l, int r) { return query_sum(1, 0, n - 1, l, r); }
-    ll query_min(int l, int r) { return query_min(1, 0, n - 1, l, r); }
-    ll query_max(int l, int r) { return query_max(1, 0, n - 1, l, r); }
+    void add(int l, int r, ll x) {
+        add(1, 0, n - 1, l, r, x);
+    }
+    void chmin(int l, int r, ll x) {
+        chmin(1, 0, n - 1, l, r, x);
+    }
+    void chmax(int l, int r, ll x) {
+        chmax(1, 0, n - 1, l, r, x);
+    }
+    ll query_sum(int l, int r) {
+        return query_sum(1, 0, n - 1, l, r);
+    }
+    ll query_min(int l, int r) {
+        return query_min(1, 0, n - 1, l, r);
+    }
+    ll query_max(int l, int r) {
+        return query_max(1, 0, n - 1, l, r);
+    }
 };

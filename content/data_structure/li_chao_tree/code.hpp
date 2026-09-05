@@ -45,13 +45,20 @@ struct LiChaoTree {
         return u;
     }
 
-    int insert_segment(int u, ll l, ll r, ll ql, ll qr, Line nw) {
+    int insert_segment(
+        int u, ll l, ll r,
+        ll ql, ll qr, Line nw
+    ) {
         if (qr < l || r < ql) return u;
         if (!u) u = new_node();
         if (ql <= l && r <= qr) return insert_line(u, l, r, nw);
         ll m = l + (r - l) / 2;
-        tr[u].ls = insert_segment(tr[u].ls, l, m, ql, qr, nw);
-        tr[u].rs = insert_segment(tr[u].rs, m + 1, r, ql, qr, nw);
+        tr[u].ls = insert_segment(
+            tr[u].ls, l, m, ql, qr, nw
+        );
+        tr[u].rs = insert_segment(
+            tr[u].rs, m + 1, r, ql, qr, nw
+        );
         return u;
     }
 
@@ -61,7 +68,10 @@ struct LiChaoTree {
 
     void add_segment(ll l, ll r, ll k, ll b) {
         l = max(l, L), r = min(r, R);
-        if (l <= r) root = insert_segment(root, L, R, l, r, {k, b});
+        if (l <= r)
+            root = insert_segment(
+                root, L, R, l, r, {k, b}
+            );
     }
 
     ll query(int u, ll l, ll r, ll x) const {
@@ -69,7 +79,8 @@ struct LiChaoTree {
         ll ans = tr[u].has ? tr[u].line.get(x) : NEG;
         if (l == r) return ans;
         ll m = l + (r - l) / 2;
-        if (x <= m) return max(ans, query(tr[u].ls, l, m, x));
+        if (x <= m)
+            return max(ans, query(tr[u].ls, l, m, x));
         return max(ans, query(tr[u].rs, m + 1, r, x));
     }
 

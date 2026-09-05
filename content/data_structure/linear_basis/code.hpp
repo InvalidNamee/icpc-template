@@ -6,14 +6,19 @@ struct LinearBasis {
     void insert(u32 x) {
         for (int i = 31; i >= 0; i--)
             if (x >> i & 1) {
-                if (b[i]) x ^= b[i];
-                else return b[i] = x, void();
+                if (b[i]) {
+                    x ^= b[i];
+                } else {
+                    b[i] = x;
+                    return;
+                }
             }
     }
 
     bool check(u32 x) const {
         for (int i = 0; i < 32; i++)
-            if (b[i] && __builtin_parity(x & b[i])) return false;
+            if (b[i] && __builtin_parity(x & b[i]))
+                return false;
         return true;
     }
 
@@ -22,7 +27,8 @@ struct LinearBasis {
         for (int i = 0; i < 32; i++) if (!b[i]) {
             u32 x = 1u << i;
             for (int j = 0; j < 32; j++)
-                if (b[j] && __builtin_parity(b[j] & x)) x ^= 1u << j;
+                if (b[j] && __builtin_parity(b[j] & x))
+                    x ^= 1u << j;
             res.insert(x);
         }
         return res;

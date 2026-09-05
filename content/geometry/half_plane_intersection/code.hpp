@@ -12,7 +12,8 @@ struct HalfPlaneIntersection {
     };
 
     bool same_direction(const Line& a, const Line& b) {
-        return fabsl(cross(a.v, b.v)) <= GEPS && dot(a.v, b.v) > 0;
+        return fabsl(cross(a.v, b.v)) <= GEPS &&
+               dot(a.v, b.v) > 0;
     }
 
     DPoint intersection(const Line& a, const Line& b) {
@@ -26,7 +27,8 @@ struct HalfPlaneIntersection {
 
         vector<Line> unique_lines;
         for (Line l : lines) {
-            if (unique_lines.empty() || !same_direction(unique_lines.back(), l))
+            if (unique_lines.empty() ||
+                !same_direction(unique_lines.back(), l))
                 unique_lines.push_back(l);
             else if (l.outside(unique_lines.back().p))
                 unique_lines.back() = l;
@@ -34,15 +36,21 @@ struct HalfPlaneIntersection {
 
         deque<Line> q;
         for (Line l : unique_lines) {
-            while (q.size() >= 2 && l.outside(intersection(q[q.size() - 2], q.back())))
+            while (q.size() >= 2 && l.outside(
+                intersection(q[q.size() - 2], q.back())
+            ))
                 q.pop_back();
-            while (q.size() >= 2 && l.outside(intersection(q[0], q[1])))
+            while (q.size() >= 2 &&
+                   l.outside(intersection(q[0], q[1])))
                 q.pop_front();
             q.push_back(l);
         }
-        while (q.size() >= 3 && q.front().outside(intersection(q[q.size() - 2], q.back())))
+        while (q.size() >= 3 && q.front().outside(
+            intersection(q[q.size() - 2], q.back())
+        ))
             q.pop_back();
-        while (q.size() >= 3 && q.back().outside(intersection(q[0], q[1])))
+        while (q.size() >= 3 &&
+               q.back().outside(intersection(q[0], q[1])))
             q.pop_front();
         if (q.size() < 3) return {};
 

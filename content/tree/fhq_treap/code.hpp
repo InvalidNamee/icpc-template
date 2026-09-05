@@ -8,13 +8,18 @@ struct FHQ {
     unsigned seed = 712367821;
 
     unsigned rnd() {
-        seed ^= seed << 13; seed ^= seed >> 17; seed ^= seed << 5;
+        seed ^= seed << 13;
+        seed ^= seed >> 17;
+        seed ^= seed << 5;
         return seed;
     }
 
     int size(int p) const { return p ? t[p].sz : 0; }
 
-    void pull(int p) { t[p].sz = size(t[p].l) + size(t[p].r) + t[p].cnt; }
+    void pull(int p) {
+        t[p].sz = size(t[p].l) +
+                  size(t[p].r) + t[p].cnt;
+    }
 
     int node(int x) {
         t.push_back({0, 0, 1, 1, x, rnd()});
@@ -23,20 +28,40 @@ struct FHQ {
 
     int merge(int a, int b) {
         if (!a || !b) return a | b;
-        if (t[a].pri < t[b].pri) return t[a].r = merge(t[a].r, b), pull(a), a;
-        return t[b].l = merge(a, t[b].l), pull(b), b;
+        if (t[a].pri < t[b].pri) {
+            t[a].r = merge(t[a].r, b);
+            pull(a);
+            return a;
+        }
+        t[b].l = merge(a, t[b].l);
+        pull(b);
+        return b;
     }
 
     void split_lt(int p, int x, int& a, int& b) {
         if (!p) return void(a = b = 0);
-        if (t[p].key < x) a = p, split_lt(t[p].r, x, t[p].r, b), pull(a);
-        else b = p, split_lt(t[p].l, x, a, t[p].l), pull(b);
+        if (t[p].key < x) {
+            a = p;
+            split_lt(t[p].r, x, t[p].r, b);
+            pull(a);
+        } else {
+            b = p;
+            split_lt(t[p].l, x, a, t[p].l);
+            pull(b);
+        }
     }
 
     void split_le(int p, int x, int& a, int& b) {
         if (!p) return void(a = b = 0);
-        if (t[p].key <= x) a = p, split_le(t[p].r, x, t[p].r, b), pull(a);
-        else b = p, split_le(t[p].l, x, a, t[p].l), pull(b);
+        if (t[p].key <= x) {
+            a = p;
+            split_le(t[p].r, x, t[p].r, b);
+            pull(a);
+        } else {
+            b = p;
+            split_le(t[p].l, x, a, t[p].l);
+            pull(b);
+        }
     }
 
     void insert(int x) {

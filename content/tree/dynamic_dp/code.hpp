@@ -11,7 +11,10 @@ struct DynamicDP {
             for (int i = 0; i < 2; i++)
                 for (int j = 0; j < 2; j++)
                     for (int k = 0; k < 2; k++)
-                        c.a[i][j] = max(c.a[i][j], a[i][k] + b.a[k][j]);
+                        c.a[i][j] = max(
+                            c.a[i][j],
+                            a[i][k] + b.a[k][j]
+                        );
             return c;
         }
     };
@@ -22,10 +25,11 @@ struct DynamicDP {
     vector<ll> w, f, g;
     vector<Mat> tr;
 
-    DynamicDP(int n) : n(n), adj(n + 1), fa(n + 1), dep(n + 1),
-        siz(n + 1), son(n + 1), dfn(n + 1), rev(n + 1),
-        top(n + 1), tail(n + 1), w(n + 1), f(n + 1), g(n + 1),
-        tr(n * 4 + 4) {}
+    DynamicDP(int n) : n(n), adj(n + 1),
+        fa(n + 1), dep(n + 1), siz(n + 1),
+        son(n + 1), dfn(n + 1), rev(n + 1),
+        top(n + 1), tail(n + 1), w(n + 1),
+        f(n + 1), g(n + 1), tr(n * 4 + 4) {}
 
     void add_edge(int x, int y) {
         adj[x].push_back(y);
@@ -87,8 +91,14 @@ struct DynamicDP {
         int m = (l + r) / 2;
         Mat res;
         res.a[0][0] = res.a[1][1] = 0;
-        if (m < qr) res = query_seg(u * 2 + 1, m + 1, r, ql, qr);
-        if (ql <= m) res = res * query_seg(u * 2, l, m, ql, qr);
+        if (m < qr)
+            res = query_seg(
+                u * 2 + 1, m + 1, r, ql, qr
+            );
+        if (ql <= m)
+            res = res * query_seg(
+                u * 2, l, m, ql, qr
+            );
         return res;
     }
 
