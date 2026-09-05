@@ -1,0 +1,60 @@
+常见数论函数包括常数函数
+\[
+  \mathbf 1(n)=1,
+\]
+恒等函数
+\[
+  \operatorname{id}(n)=n,
+\]
+单位函数
+\[
+  \varepsilon(n)=\begin{cases}1,&n=1,\\0,&n>1,\end{cases}
+\]
+莫比乌斯函数 $\mu$、约数个数函数
+\[
+  \tau(n)=\sum_{d\mid n}1,
+\]
+约数和函数
+\[
+  \sigma(n)=\sum_{d\mid n}d,
+\]
+以及欧拉函数 $\varphi$。
+
+狄利克雷卷积定义为
+\[
+  (f*g)(n)=\sum_{d\mid n}f(d)g\!\left(\frac nd\right).
+\]
+单位元是 $\varepsilon$，即 $f*\varepsilon=f$。
+重要恒等式为
+\[
+  \mu*\mathbf 1=\varepsilon,
+  \qquad
+  \varphi*\mathbf 1=\operatorname{id},
+  \qquad
+  \mathbf 1*\mathbf 1=\tau,
+  \qquad
+  \operatorname{id}*\mathbf 1=\sigma.
+\]
+
+\begin{icpcresult}[莫比乌斯反演]
+  若
+  \[
+    F(n)=\sum_{d\mid n}f(d),
+  \]
+  则
+  \[
+    f(n)=\sum_{d\mid n}\mu\!\left(\frac nd\right)F(d)
+        =\sum_{d\mid n}\mu(d)F\!\left(\frac nd\right).
+  \]
+\end{icpcresult}
+
+指示式
+\[
+  [\gcd(i,j)=1]=\sum_{d\mid i,\,d\mid j}\mu(d)
+\]
+常用于把互质限制变成可按倍数统计的整除条件。
+
+\begin{icpcwarning}[卷积方向]
+  反演公式有两种等价下标写法。
+  使用时先明确外层函数是“对约数求和”还是“对倍数求和”，不要直接套用另一种形式。
+\end{icpcwarning}

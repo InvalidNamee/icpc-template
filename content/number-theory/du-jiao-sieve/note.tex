@@ -1,0 +1,103 @@
+要求积性函数 $f$ 的前缀和
+\[
+  S_f(n)=\sum_{i=1}^{n}f(i).
+\]
+设
+\[
+  f*g=h,
+\]
+即
+\[
+  h(n)=\sum_{d\mid n}f(d)g\!\left(\frac nd\right).
+\]
+
+对 $h(n)$ 求前缀和：
+\[
+  \begin{aligned}
+  \sum_{i=1}^{n}h(i)
+  &=\sum_{i=1}^{n}\sum_{d\mid i}g(d)f\!\left(\frac id\right)\\
+  &=\sum_{d=1}^{n}g(d)
+    \sum_{k=1}^{\lfloor n/d\rfloor}f(k)
+    \qquad(i=dk)\\
+  &=\sum_{d=1}^{n}g(d)S_f\!\left(\left\lfloor\frac nd\right\rfloor\right).
+  \end{aligned}
+\]
+
+我们想求的是 $S_f(n)$，一般选择满足 $g(1)=1$ 的卷积，于是
+\[
+  \sum_{i=1}^{n}h(i)
+  =S_f(n)+\sum_{d=2}^{n}g(d)
+    S_f\!\left(\left\lfloor\frac nd\right\rfloor\right),
+\]
+从而
+\[
+  S_f(n)
+  =\sum_{i=1}^{n}h(i)-\sum_{d=2}^{n}g(d)
+    S_f\!\left(\left\lfloor\frac nd\right\rfloor\right).
+\]
+
+因此要找一个卷积 $f*g=h$，使得 $h$ 的前缀和非常容易计算。
+递推的后一部分使用整除分块，再从较小的
+$S_f(\lfloor n/d\rfloor)$ 递归反推出 $S_f(n)$。
+
+通常先用线性筛预处理 $B=\lfloor n^{2/3}\rfloor$ 范围内的前缀和，
+避免大量小值被重复计算；超过 $B$ 的状态使用哈希表记忆化。
+
+\subsubsection{例 1：$\mu$ 的前缀和}
+
+要求
+\[
+  S_\mu(n)=\sum_{i=1}^{n}\mu(i).
+\]
+由
+\[
+  \mu*\mathbf 1=\varepsilon
+\]
+代入通式可得
+\[
+  \begin{aligned}
+  S_\mu(n)
+  &=\sum_{i=1}^{n}\varepsilon(i)
+    -\sum_{d=2}^{n}S_\mu\!\left(\left\lfloor\frac nd\right\rfloor\right)\\
+  &=1-\sum_{d=2}^{n}S_\mu\!\left(\left\lfloor\frac nd\right\rfloor\right).
+  \end{aligned}
+\]
+
+\subsubsection{例 2：$\varphi$ 的前缀和}
+
+要求
+\[
+  S_\varphi(n)=\sum_{i=1}^{n}\varphi(i).
+\]
+由
+\[
+  \varphi*\mathbf 1=\operatorname{id}
+\]
+代入通式可得
+\[
+  \begin{aligned}
+  S_\varphi(n)
+  &=\sum_{i=1}^{n}\operatorname{id}(i)
+    -\sum_{d=2}^{n}S_\varphi\!\left(\left\lfloor\frac nd\right\rfloor\right)\\
+  &=\frac{n(n+1)}2
+    -\sum_{d=2}^{n}S_\varphi\!\left(\left\lfloor\frac nd\right\rfloor\right).
+  \end{aligned}
+\]
+这里卷积的第二个函数是 $\mathbf 1$，所以 $g(d)=1$，递推项前没有额外的 $d$。
+
+\subsubsection{整除分块}
+
+对固定的 $n$，$\lfloor n/d\rfloor$ 只有 $O(\sqrt n)$ 种不同取值。
+若当前左端点为 $l$，令
+\[
+  q=\left\lfloor\frac nl\right\rfloor,
+  \qquad
+  r=\left\lfloor\frac nq\right\rfloor,
+\]
+则所有 $d\in[l,r]$ 都满足 $\lfloor n/d\rfloor=q$，可以一次合并整段贡献。
+
+\begin{icpcwarning}[实现细节]
+  $n(n+1)/2$ 和分块贡献可能在乘法阶段溢出，模板使用
+  \texttt{\_\_int128} 保存中间结果，再转回 \texttt{ll}。
+  构造时的预处理上界至少应为 $1$。
+\end{icpcwarning}

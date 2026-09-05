@@ -1,0 +1,38 @@
+对素数 $p$，Lucas 定理为
+\[
+  \binom nk\equiv
+  \binom{\lfloor n/p\rfloor}{\lfloor k/p\rfloor}
+  \binom{n\bmod p}{k\bmod p}\pmod p.
+\]
+递归分解 $n,k$ 的 $p$ 进制位即可。
+
+求 $\binom nk\bmod M$ 且 $M$ 为合数时，先分解
+\[
+  M=\prod_{i=1}^{t}p_i^{q_i}.
+\]
+对每个素数幂模数计算答案，再用 CRT 合并。
+
+在模 $p^q$ 下，将阶乘拆为
+\[
+  n!=p^{v_p(n!)}(n!)_p,
+  \qquad
+  v_p(n!)=\sum_{j\ge1}\left\lfloor\frac{n}{p^j}\right\rfloor,
+\]
+其中 $(n!)_p$ 表示去掉所有因子 $p$ 后的部分。
+于是
+\[
+  \binom nk=
+  p^{v_p(n!)-v_p(k!)-v_p((n-k)!)}
+  \frac{(n!)_p}{(k!)_p((n-k)!)_p}.
+\]
+分母与 $p^q$ 互质，可以用扩展欧几里得求逆元。
+按原笔记中的实现思路，整体复杂度通常记为
+\[
+  O\!\left(\sqrt M+\sum_i p_i^{q_i}\right),
+\]
+具体取决于分解模数以及计算去 $p$ 阶乘的方式。
+
+\begin{icpcwarning}[命名与前提]
+  扩展 Lucas 不是简单地把 Lucas 递归中的 $p$ 换成合数。
+  必须按素数幂计算阶乘的 $p$-进赋值与去 $p$ 部分，再用 CRT 合并。
+\end{icpcwarning}

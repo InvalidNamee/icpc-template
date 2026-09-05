@@ -1,0 +1,47 @@
+线性筛可以在 $O(n)$ 时间内求出 $1$ 到 $n$ 的所有质数。
+在同一套枚举中还可以求出：
+\begin{itemize}
+  \item 每个数的最小质因子；
+  \item 每个数的欧拉函数；
+  \item 每个数的莫比乌斯函数；
+  \item 每个数的约数个数；
+  \item 每个数的约数和；
+  \item 不计重/计重的质因子个数；
+  \item 最小质因子的指数。
+\end{itemize}
+每个合数只由“最小质因子 $\times$ 其余部分”筛掉一次，因此总复杂度为 $O(n)$。
+
+欧拉函数满足
+\[
+  \varphi(n)=n\prod_{p\mid n}\left(1-\frac1p\right).
+\]
+莫比乌斯函数满足
+\[
+  \mu(n)=
+  \begin{cases}
+    1,&n=1,\\
+    0,&n\text{ 含平方因子},\\
+    (-1)^k,&n\text{ 是 }k\text{ 个不同素数的乘积}.
+  \end{cases}
+\]
+
+在线性筛中，若 $p\mid i$，则 $p$ 是 $ip$ 的最小质因子，处理后立即退出质数循环。
+这也是更新 $\varphi$ 与 $\mu$ 时区分“新增质因子”和“已有质因子”的位置。
+
+若
+\[
+  n=\prod_{i=1}^{k}p_i^{a_i},
+\]
+则约数个数和约数和分别为
+\[
+  d(n)=\prod_{i=1}^{k}(a_i+1),
+  \qquad
+  \sigma(n)=\prod_{i=1}^{k}(1+p_i+\cdots+p_i^{a_i}).
+\]
+记 $\omega(n)=k$ 为不同质因子个数，$\Omega(n)=\sum_i a_i$ 为计重质因子个数。
+对应模板分别在线性筛中维护这些量，便于直接复制需要的版本。
+
+\begin{icpcwarning}[常见错误]
+  判断应写成 \texttt{i \% p == 0}，不是使用未定义或错误的循环变量。
+  乘积 \texttt{i * p} 应提升为 64 位后再与 $n$ 比较。
+\end{icpcwarning}

@@ -1,0 +1,170 @@
+\subsubsection{最大公约数与欧几里得算法}
+
+对不全为零的整数 $a,b$，最大公约数 $\gcd(a,b)$ 是同时整除 $a,b$ 的最大正整数。
+常用边界约定为
+\[
+  \gcd(a,0)=|a|,
+  \qquad
+  \gcd(0,0)=0.
+\]
+普通欧几里得算法使用
+\[
+  \gcd(a,b)=\gcd(b,a\bmod b).
+\]
+不断把较大的数替换为余数，直到第二个数变为 $0$，此时第一个数就是最大公约数。
+时间复杂度为 $O(\log\min(|a|,|b|))$。
+
+\subsubsection{裴蜀定理}
+
+对整数 $a,b$，一定存在整数 $x,y$ 使
+\[
+  ax+by=\gcd(a,b).
+\]
+更一般地，方程
+\[
+  ax+by=c
+\]
+有整数解，当且仅当
+\[
+  \gcd(a,b)\mid c.
+\]
+
+\subsubsection{扩展欧几里得算法}
+
+扩展欧几里得算法在求最大公约数的同时，求出裴蜀等式的一组系数。
+设
+\[
+  ax_1+by_1=\gcd(a,b),
+\]
+以及
+\[
+  bx_2+(a\bmod b)y_2=\gcd(b,a\bmod b).
+\]
+由于
+\[
+  a\bmod b=a-\left\lfloor\frac ab\right\rfloor b,
+\]
+代入得到
+\[
+  ax_1+by_1
+  =ay_2+b\left(x_2-\left\lfloor\frac ab\right\rfloor y_2\right).
+\]
+因此回代关系为
+\[
+  x_1=y_2,
+  \qquad
+  y_1=x_2-\left\lfloor\frac ab\right\rfloor y_2.
+\]
+递归最终到达 $b=0$，此时
+\[
+  ax+0y=\gcd(a,0)=|a|.
+\]
+回代得到的一组系数可以取在与 $a,b$ 同量级的范围内；原笔记记录的常用界为 $|x|\le |b|$、$|y|\le |a|$。
+扩展欧几里得的本质是在整数范围内描述 $a,b$ 的所有线性组合。
+
+若扩欧得到 $ax_0+by_0=g$，其中 $g=\gcd(a,b)$，则方程 $ax+by=c$ 在 $g\mid c$ 时有解。
+把 $x_0,y_0$ 同乘 $c/g$ 得到一组特解，所有解为
+\[
+  x=x_0+\frac bg t,
+  \qquad
+  y=y_0-\frac ag t,
+  \qquad t\in\mathbb Z.
+\]
+时间复杂度为 $O(\log\min(|a|,|b|))$。
+
+\paragraph{应用一：解一次不定方程}
+
+对 $ax+by=c$，先计算 $g=\gcd(a,b)$。
+若 $g\nmid c$，无整数解；否则把扩欧对 $g$ 求出的系数同乘 $c/g$。
+
+\paragraph{应用二：求逆元}
+
+求 $a^{-1}\pmod m$ 等价于求
+\[
+  ax+my=1.
+\]
+因此逆元存在当且仅当 $\gcd(a,m)=1$，此时 $x\bmod m$ 即为逆元。
+
+\paragraph{应用三：解线性同余方程}
+
+\[
+  ax\equiv b\pmod m
+\]
+等价于
+\[
+  ax+my=b.
+\]
+记 $d=\gcd(a,m)$，方程有解当且仅当 $d\mid b$。
+约去 $d$ 后，解在模 $m/d$ 下唯一。
+
+\subsubsection{GCD 的周期性}
+
+\[
+  \gcd(x,n)=\gcd(x+kn,n).
+\]
+例如
+\[
+  [\gcd(1,6),\ldots,\gcd(6,6)]
+  =[\gcd(7,6),\ldots,\gcd(12,6)].
+\]
+因此 $f(i)=\gcd(a+i,b)$ 关于 $i$ 以 $b$ 为周期。
+当 $a\ne b$ 时，$f(i)=\gcd(a+i,b+i)$ 关于 $i$ 以 $|a-b|$ 为周期。
+
+\subsubsection{常见 GCD 变形}
+
+\paragraph{固定差}
+
+同时加减同一个量时，可以把两数的差固定下来：
+\[
+  \gcd(a+1,b+1)=\gcd(a+1,b-a).
+\]
+这是恒等式 $\gcd(x,y)=\gcd(x,y-x)$ 的直接应用。
+
+\paragraph{嵌套 GCD}
+
+\[
+  \gcd\bigl(\gcd(a,b),\gcd(a+c,b)\bigr)=\gcd(a,b,c).
+\]
+因为同时整除 $a,b,a+c$ 等价于同时整除 $a,b,c$。
+
+\paragraph{把 GCD 条件改写为整除条件}
+
+\[
+  d\mid\gcd(a,b)
+  \iff d\mid a\ \land\ d\mid b.
+\]
+因此
+\[
+  \sum_{i=1}^{n}\sum_{j=1}^{m}[d\mid i][d\mid j]
+  =\left\lfloor\frac nd\right\rfloor
+   \left\lfloor\frac md\right\rfloor.
+\]
+利用 $\gcd(i,j)=\sum_{d\mid i,\,d\mid j}\varphi(d)$，还可得到
+\[
+  \sum_{i=1}^{n}\sum_{j=1}^{m}\gcd(i,j)
+  =\sum_{d=1}^{\min(n,m)}\varphi(d)
+   \left\lfloor\frac nd\right\rfloor
+   \left\lfloor\frac md\right\rfloor.
+\]
+
+\paragraph{按 GCD 枚举约数}
+
+\[
+  \begin{aligned}
+  f(m)
+  &=\sum_{i=1}^{m}[\gcd(i,n)\le c]\\
+  &=\sum_{\substack{q\mid n\\q\le c}}
+    \sum_{i=1}^{m}[\gcd(i,n)=q]\\
+  &=\sum_{\substack{q\mid n\\q\le c}}
+    \sum_{i=1}^{\lfloor m/q\rfloor}
+    \left[\gcd\!\left(i,\frac nq\right)=1\right]\\
+  &=\sum_{\substack{q\mid n\\q\le c}}
+    \sum_{i=1}^{\lfloor m/q\rfloor}
+    \sum_{d\mid i,\,d\mid n/q}\mu(d).
+  \end{aligned}
+\]
+
+\begin{icpcwarning}[边界与符号]
+  实现时统一让 GCD 返回非负数。若允许负数输入，扩欧的递归边界也必须处理 $a<0$；
+  $a=b=0$ 时裴蜀系数不唯一，通常只约定 GCD 为 $0$。
+\end{icpcwarning}

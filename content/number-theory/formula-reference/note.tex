@@ -1,0 +1,18 @@
+\subsubsection{阶乘中质因子 $p$ 的指数}
+
+Legendre 公式为
+\[
+  v_p(n!)=
+  \left\lfloor\frac np\right\rfloor+
+  \left\lfloor\frac n{p^2}\right\rfloor+
+  \left\lfloor\frac n{p^3}\right\rfloor+\cdots.
+\]
+
+\subsubsection{约数个数函数的前缀和}
+
+记 $d(i)$ 为 $i$ 的正约数个数，则
+\[
+  \sum_{i=1}^{n}d(i)
+  =\sum_{i=1}^{n}\left\lfloor\frac ni\right\rfloor.
+\]
+右边是在枚举每个 $i$ 作为多少个整数的约数。

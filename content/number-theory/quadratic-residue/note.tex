@@ -1,0 +1,77 @@
+若同余方程 $x^2\equiv a\pmod p$ 有解，则称 $a$ 是模 $p$ 的二次剩余。
+对奇素数 $p$，Euler 判别法为
+\[
+  a^{(p-1)/2}\equiv
+  \begin{cases}
+    0,&p\mid a,\\
+    1,&a\text{ 是二次剩余},\\
+    -1,&a\text{ 是二次非剩余}
+  \end{cases}\pmod p.
+\]
+
+Legendre 符号定义为
+\[
+  \left(\frac ap\right)=
+  \begin{cases}
+    0,&p\mid a,\\
+    1,&a\text{ 是模 }p\text{ 的二次剩余},\\
+    -1,&a\text{ 是模 }p\text{ 的二次非剩余}.
+  \end{cases}
+\]
+它满足
+\[
+  a^{(p-1)/2}\equiv\left(\frac ap\right)\pmod p,
+  \qquad
+  \left(\frac{ab}{p}\right)=\left(\frac ap\right)\left(\frac bp\right).
+\]
+此外
+\[
+  \left(\frac1p\right)=1,
+  \qquad
+  \left(\frac{-1}{p}\right)=(-1)^{(p-1)/2},
+  \qquad
+  \left(\frac2p\right)=(-1)^{(p^2-1)/8}.
+\]
+对 $p\nmid b$，完全积性还给出
+\[
+  \left(\frac{ab^2}{p}\right)=\left(\frac ap\right).
+\]
+两条补充公式的分情况写法为
+\[
+  \left(\frac{-1}{p}\right)=
+  \begin{cases}
+    1,&p\equiv1\pmod4,\\
+    -1,&p\equiv3\pmod4,
+  \end{cases}
+\]
+以及
+\[
+  \left(\frac2p\right)=
+  \begin{cases}
+    1,&p\equiv1,7\pmod8,\\
+    -1,&p\equiv3,5\pmod8.
+  \end{cases}
+\]
+
+对不同奇素数 $p,q$，二次互反律为
+\[
+  \left(\frac pq\right)\left(\frac qp\right)
+  =(-1)^{\frac{p-1}{2}\frac{q-1}{2}}.
+\]
+
+\begin{icpcresult}[特殊模数的平方根]
+  若 $p\equiv3\pmod4$ 且 $a$ 是二次剩余，则
+  \[
+    x\equiv a^{(p+1)/4}\pmod p
+  \]
+  是一个平方根，另一个为 $p-x$。
+\end{icpcresult}
+
+一般奇素数可使用 Cipolla 或 Tonelli--Shanks。
+Cipolla 在二次扩域中选取满足 $w=a_0^2-n$ 为二次非剩余的 $a_0$，再计算
+\[
+  (a_0+\sqrt w)^{(p+1)/2}.
+\]
+其常数项就是一个平方根；另一个根为 $p-x$。
+
+代码接口 \texttt{solve(n,p)} 返回一个根；返回 $-1$ 表示无解。模数 $p$ 必须为素数。

@@ -1,0 +1,154 @@
+Burnside 引理给出群作用下的本质不同方案数：
+\[
+  \operatorname{cnt}
+  =\frac{1}{|G|}\sum_{g\in G}|\operatorname{Fix}(g)|.
+\]
+这里 $\operatorname{Fix}(g)$ 是在操作 $g$ 下保持不变的对象集合。
+
+\subsubsection{预备知识：群}
+
+群由一个集合 $S$ 和一个二元运算 $*$ 组成，需要满足：
+\begin{enumerate}
+  \item 封闭性：$\forall x,y\in S$，有 $x*y\in S$；
+  \item 结合律：$x*(y*z)=(x*y)*z$；
+  \item 单位元：$\exists e\in S$，使 $\forall x\in S$ 都有 $x*e=x$；
+  \item 逆元：$\forall x\in S$，存在 $x^{-1}\in S$ 使 $x*x^{-1}=e$。
+\end{enumerate}
+
+\paragraph{预备例一：圆环的旋转操作}
+
+一个圆环有 $n$ 个节点。
+记 $f_i$ 为旋转 $i$ 格，操作集合为
+\[
+  S=\{f_0,f_1,\ldots,f_{n-1}\}.
+\]
+运算定义为操作复合：
+\[
+  f_i\circ f_j=f_{(i+j)\bmod n}.
+\]
+由于 $(i+j)\bmod n\in\{0,1,\ldots,n-1\}$，封闭性成立。
+操作复合满足结合律，因为
+\[
+  (f_i\circ f_j)\circ f_k=f_i\circ(f_j\circ f_k),
+\]
+两边都等价于旋转 $(i+j+k)\bmod n$ 格。
+单位元为 $f_0$。
+任意 $f_i$ 的逆元为
+\[
+  f_{(n-i)\bmod n},
+\]
+因为二者复合为 $f_0$。
+因此圆环上的所有旋转操作构成一个群。
+
+\paragraph{预备例二：长方体的循环平移}
+
+一个 $a\times b\times c$ 的长方体由 $abc$ 个单位小方块组成，有 $k$ 种颜色，第 $i$ 种颜色的数量为 $d_i$。
+下面先证明三个方向上的所有循环平移操作构成一个群；颜色数量不影响这个操作群的证明。
+每个位置记为
+\[
+  (x,y,z),
+  \qquad
+  0\le x<a,
+  \quad 0\le y<b,
+  \quad 0\le z<c.
+\]
+记 $T_{i,j,k}$ 为三个方向分别循环平移 $i,j,k$ 格，操作集合为
+\[
+  G=\{T_{i,j,k}\mid 0\le i<a,\ 0\le j<b,\ 0\le k<c\},
+\]
+所以 $|G|=abc$。
+平移把位置变成
+\[
+  ((x+i)\bmod a,(y+j)\bmod b,(z+k)\bmod c).
+\]
+两个平移复合为
+\[
+  T_{(i_1+i_2)\bmod a,
+     (j_1+j_2)\bmod b,
+     (k_1+k_2)\bmod c}.
+\]
+复合后仍是合法平移，满足封闭性；模加法满足结合律；单位元是 $T_{0,0,0}$；逆元是
+\[
+  T_{(-i)\bmod a,(-j)\bmod b,(-k)\bmod c}.
+\]
+因此所有三维循环平移操作构成一个群。
+
+\subsubsection{例题一：长度为 4 的黑白项链}
+
+长度为 $4$ 的项链，每颗珠子可染成黑白两色，旋转后相同算同一种方案。
+四种旋转的固定方案数依次为 $16,2,4,2$，因此
+\[
+  \operatorname{ans}=\frac14(16+2+4+2)=6.
+\]
+
+\subsubsection{例题二：只考虑旋转的 $k$ 色项链}
+
+长度为 $n$，每个位置有 $k$ 种颜色。
+旋转 $r$ 格会把位置分成 $\gcd(n,r)$ 个循环，固定方案数为 $k^{\gcd(n,r)}$，所以
+\[
+  \operatorname{ans}
+  =\frac1n\sum_{r=0}^{n-1}k^{\gcd(n,r)}.
+\]
+按 $g=\gcd(n,r)$ 分组可得
+\[
+  \operatorname{ans}
+  =\frac1n\sum_{g\mid n}\varphi\!\left(\frac ng\right)k^g.
+\]
+证明如下。
+因为 $g\mid n$，两边同除以 $g$ 后有
+\[
+  \gcd\!\left(\frac ng,\frac rg\right)=1.
+\]
+对固定的 $g$，满足条件的 $r$ 的个数正是 $\varphi(n/g)$。
+
+\subsubsection{例题三：旋转和翻转都视为相同}
+
+长度为 $n$ 的项链有 $n$ 个旋转和 $n$ 个翻转，因此 $|G|=2n$。
+旋转部分贡献
+\[
+  \sum_{r=0}^{n-1}k^{\gcd(n,r)}
+  =\sum_{g\mid n}\varphi\!\left(\frac ng\right)k^g.
+\]
+
+当 $n$ 为奇数时，每条翻转轴经过一个珠子和一条边。
+有 $1$ 个珠子固定，其余珠子两两配对，独立位置数为
+\[
+  1+\frac{n-1}{2}=\frac{n+1}{2}.
+\]
+每个翻转固定 $k^{(n+1)/2}$ 个方案，共有 $n$ 个翻转，所以
+\[
+  \operatorname{ans}
+  =\frac1{2n}\left(
+    \sum_{g\mid n}\varphi\!\left(\frac ng\right)k^g
+    +nk^{(n+1)/2}
+  \right).
+\]
+
+当 $n$ 为偶数时，翻转轴分为两类。
+第一类经过两个相对珠子，有 $2$ 个珠子固定，其余两两配对，独立位置数为
+\[
+  2+\frac{n-2}{2}=\frac n2+1.
+\]
+这种翻转有 $n/2$ 个，贡献为
+\[
+  \frac n2k^{n/2+1}.
+\]
+第二类经过两条相对边，没有珠子固定，所有珠子两两配对，独立位置数为 $n/2$。
+这种翻转有 $n/2$ 个，贡献为
+\[
+  \frac n2k^{n/2}.
+\]
+因此
+\[
+  \operatorname{ans}
+  =\frac1{2n}\left(
+    \sum_{g\mid n}\varphi\!\left(\frac ng\right)k^g
+    +\frac n2k^{n/2+1}
+    +\frac n2k^{n/2}
+  \right).
+\]
+
+\begin{icpcwarning}[固定方案不是操作个数]
+  Burnside 求和项是每个群元素固定的染色方案数。
+  按 $\gcd$ 分组时，满足 $\gcd(n,r)=g$ 的旋转数是 $\varphi(n/g)$。
+\end{icpcwarning}

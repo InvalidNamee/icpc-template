@@ -1,0 +1,113 @@
+\subsubsection{逆元}
+
+若
+\[
+  ab\equiv1\pmod m,
+\]
+则称 $b$ 为 $a$ 在模 $m$ 意义下的逆元，记作 $a^{-1}$。
+
+\subsubsection{同余运算与约分}
+
+\[
+  a\equiv b\pmod m
+  \iff a=km+b
+  \iff m\mid(a-b).
+\]
+同余式两边可以同时加、减、乘同一个数，但除法不能随意进行。
+若 $d=\gcd(k,m)$，则
+\[
+  ka\equiv kb\pmod m
+  \iff
+  a\equiv b\pmod{m/d}.
+\]
+在 $0,1,\ldots,m-1$ 中，方程
+\[
+  Ax\equiv0\pmod m
+\]
+恰有 $\gcd(A,m)$ 个解。
+
+\subsubsection{中国剩余定理}
+
+考虑同余方程组
+\[
+  \begin{cases}
+    x\equiv a_1\pmod{m_1},\\
+    x\equiv a_2\pmod{m_2},\\
+    \cdots\\
+    x\equiv a_k\pmod{m_k}.
+  \end{cases}
+\]
+当模数 $m_1,\ldots,m_k$ 两两互质时，令
+\[
+  M=\prod_{i=1}^{k}m_i,
+  \qquad M_i=\frac{M}{m_i}.
+\]
+计算 $M_i$ 在模 $m_i$ 下的逆元 $M_i^{-1}$，再令 $c_i=M_iM_i^{-1}$（此处不先取模）。
+唯一解（模 $M$）为
+\[
+  x\equiv\sum_{i=1}^{k}a_ic_i
+  \equiv\sum_{i=1}^{k}a_iM_i(M_i^{-1}\bmod m_i)
+  \pmod M.
+\]
+若 $V=\max_i m_i$，逐个求逆并合并的常见复杂度写作 $O(k\log V)$。
+
+\subsubsection{扩展中国剩余定理}
+
+模数不互质时，逐个合并方程。
+先考虑
+\[
+  x\equiv a_1\pmod{m_1},
+  \qquad
+  x\equiv a_2\pmod{m_2}.
+\]
+由第一个方程写成 $x=a_1+m_1t$，代入第二个方程：
+\[
+  a_1+m_1t\equiv a_2\pmod{m_2},
+\]
+即
+\[
+  m_1t\equiv a_2-a_1\pmod{m_2}.
+\]
+它等价于一次不定方程
+\[
+  m_1t+m_2r=a_2-a_1.
+\]
+令 $g=\gcd(m_1,m_2)$，有解的充要条件为
+\[
+  g\mid(a_2-a_1).
+\]
+有解时约去 $g$：
+\[
+  \frac{m_1}{g}t
+  \equiv
+  \frac{a_2-a_1}{g}
+  \pmod{m_2/g}.
+\]
+由于 $m_1/g$ 与 $m_2/g$ 互质，可以求逆元得到 $t$。
+合并后的余数和模数为
+\[
+  a'=a_1+m_1t,
+  \qquad
+  m'=\operatorname{lcm}(m_1,m_2).
+\]
+依次两两合并即可。
+若最终模数为 $N=\operatorname{lcm}(m_1,\ldots,m_k)$，逐个合并的常见复杂度写作 $O(k\log N)$。
+
+\paragraph{应用：拆模数计算}
+
+若要求答案模合数 $M$，先分解
+\[
+  M=p_1^{q_1}p_2^{q_2}\cdots p_s^{q_s}.
+\]
+分别计算
+\[
+  \mathrm{ans}\bmod p_1^{q_1},
+  \quad\ldots,\quad
+  \mathrm{ans}\bmod p_s^{q_s},
+\]
+最后用 CRT 合并成 $\mathrm{ans}\bmod M$。
+
+\begin{icpcwarning}[实现细节]
+  中间乘法可能溢出，按数据范围使用 \texttt{\_\_int128} 或快速乘。
+  C++ 的负数取余可能为负，统一规范化到 $[0,m)$。
+\end{icpcwarning}

@@ -1,0 +1,164 @@
+\subsubsection{完全剩余系性质}
+
+模 $m$ 的一个完全剩余系是
+\[
+  0,1,2,\ldots,m-1.
+\]
+若 $\gcd(a,m)=1$，则 $ar_1,ar_2,\ldots,ar_m$ 在模 $m$ 下仍构成完全剩余系。
+映射 $x\mapsto ax$ 只会打乱顺序，不会产生碰撞。
+既约剩余系也有相同性质。
+例如模 $12$ 的既约剩余系为
+\[
+  1,5,7,11.
+\]
+
+\subsubsection{质因子界}
+
+一个合数 $n$ 一定有一个素因子 $p\le\sqrt n$。
+否则它的所有素因子都大于 $\sqrt n$，任意两个素因子的乘积就会大于 $n$，产生矛盾。
+
+\subsubsection{常见公式化简}
+
+\paragraph{把取模改写为整除分块}
+
+\[
+  \begin{aligned}
+  G(n,k)
+  &=\sum_{i=1}^{n}(k\bmod i)\\
+  &=nk-\sum_{i=1}^{n}i\left\lfloor\frac ki\right\rfloor.
+  \end{aligned}
+\]
+
+\paragraph{拆开二重求和}
+
+\[
+  \sum_i\sum_j f(i)f(j)
+  =\left(\sum_i f(i)\right)\left(\sum_j f(j)\right).
+\]
+并且
+\[
+  \begin{aligned}
+  \sum_{i=1}^{n}\sum_{j=1}^{m}(f(i)+f(j))
+  &=m\sum_{i=1}^{n}f(i)+n\sum_{j=1}^{m}f(j).
+  \end{aligned}
+\]
+
+\subsubsection{同余方程速查}
+
+\[
+  a\equiv b\pmod m
+  \iff a=km+b
+  \iff m\mid(a-b).
+\]
+两边可以同时进行加、减、乘运算，但不能随意相除。
+
+若 $\gcd(k,m)=1$，则
+\[
+  ka\equiv kb\pmod m
+  \iff a\equiv b\pmod m.
+\]
+若 $d=\gcd(k,m)$，则
+\[
+  ka\equiv kb\pmod m
+  \iff a\equiv b\pmod{m/d}.
+\]
+方程 $ax\equiv b\pmod m$ 有解当且仅当 $\gcd(a,m)\mid b$。
+方程 $Ax\equiv0\pmod m$ 在 $0,1,\ldots,m-1$ 中恰有 $\gcd(A,m)$ 个解。
+
+\subsubsection{批量求逆元}
+
+对 $a_1,a_2,\ldots,a_n$，若它们在模 $m$ 下均可逆，则
+\[
+  a_i^{-1}
+  =\left(\prod_{j<i}a_j\right)
+   \left(\prod_{j>i}a_j\right)
+   \left(\prod_{j=1}^{n}a_j\right)^{-1}.
+\]
+维护前缀积和后缀积，只需求一次总积的逆元，即可在线性时间内求出全部逆元。
+
+\subsubsection{组合数公式}
+
+\[
+  \binom nk=\frac{n!}{k!(n-k)!},
+  \qquad
+  \binom nk=\binom{n-1}{k-1}+\binom{n-1}{k}.
+\]
+\[
+  (1+x)^n=\sum_{k=0}^{n}\binom nkx^k,
+  \qquad
+  \sum_{k=0}^{n}(-1)^k\binom nk=0\quad(n>0).
+\]
+\[
+  \binom{m+n}{r}
+  =\sum_{k=0}^{r}\binom mk\binom n{r-k}.
+\]
+\[
+  \binom{n+1}{k}
+  =\frac{n+1}{n+1-k}\binom nk,
+  \qquad
+  \binom{n+1}{k+1}
+  =\frac{n+1}{k+1}\binom nk.
+\]
+\[
+  \sum_{k=0}^{n}k\binom nk=n2^{n-1},
+  \qquad
+  \sum_{k=0}^{n}\binom nk^2=\binom{2n}{n}.
+\]
+
+\subsubsection{约瑟夫环}
+
+当人数为 $n$、每次数到 $k$ 的人出队时，代码给出了：
+\begin{itemize}
+  \item 最后一个出队者的位置；
+  \item 第 $m$ 个出队者的位置的递归写法；
+  \item $n,m$ 较大时的跳步写法。
+\end{itemize}
+所有函数都使用 0-based 下标；若题目使用 1-based，下标需在接口处转换。
+
+\subsubsection{Fibonacci}
+
+基本定义为
+\[
+  F_0=0,
+  \qquad F_1=1,
+  \qquad F_n=F_{n-1}+F_{n-2}\quad(n\ge2).
+\]
+Binet 通项公式为
+\[
+  F_n=\frac1{\sqrt5}\left[
+    \left(\frac{1+\sqrt5}{2}\right)^n
+    -\left(\frac{1-\sqrt5}{2}\right)^n
+  \right].
+\]
+记黄金比例
+\[
+  \phi=\frac{1+\sqrt5}{2},
+\]
+则有近似 $F_n\approx\phi^n/\sqrt5$。
+
+常用恒等式包括
+\[
+  \sum_{i=0}^{n}F_i^2=F_nF_{n+1},
+  \qquad
+  \sum_{i=0}^{n}F_i=F_{n+2}-1,
+\]
+\[
+  F_{2n}=F_n(2F_{n+1}-F_n),
+\]
+\[
+  F_{m+n}=F_{m-1}F_n+F_mF_{n+1},
+\]
+以及 Cassini 恒等式
+\[
+  F_{n-1}F_{n+1}-F_n^2=(-1)^n.
+\]
+
+Fibonacci 数列的下标与最大公约数满足
+\[
+  \gcd(F_n,F_m)=F_{\gcd(n,m)}.
+\]
+
+\begin{icpcwarning}[边界]
+  当 $a=b$ 时，$\gcd(a+i,b+i)=|a+i|$，不能套用周期 $|a-b|=0$ 的说法。
+  约瑟夫环的跳步版本需要 $k>1$，并且要根据题目的下标约定转换答案。
+\end{icpcwarning}
