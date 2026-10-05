@@ -1,5 +1,7 @@
 \ICPCModule{费用流}
 \ICPCMeta{适用条件}{求固定流量下的最小费用，或最小费最大流。}
-\ICPCMeta{复杂度}{增广路上用 SPFA 求最短路，常数小且易于记忆。}
+\ICPCMeta{复杂度}{设增广次数为 $A$，两版每轮均为 $O(n+m\log(m+1))$；非负权版初始化 $O(n)$，负权版 SPFA 初始化最坏 $O(nm)$。}
+\ICPCMeta{验证状态}{两版均通过 C++17 编译与随机小图穷举对拍。}
 \ICPCNote
-\ICPCCode[最小费最大流]{code.hpp}
+\ICPCCode[非负权：零势能初始化 + Dijkstra]{code.hpp}
+\ICPCCode[负权无负环：SPFA 初始化势能 + Dijkstra]{spfa_dijkstra.hpp}

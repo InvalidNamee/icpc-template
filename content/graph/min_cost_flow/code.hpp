@@ -1,61 +1,86 @@
-using ll = long long;
-
 struct MCMF {
-    // 顶点编号：1..n（1-based）；邻接表位置 r 为内部 0-based 下标
-    struct E {
-        int v, r;
-        ll c, w;
+    struct Edge {
+        int to, rev, cap;
+        long long cost;
     };
 
     int n;
-    vector<vector<E>> g;
+    vector<vector<Edge>> g;
 
     MCMF(int n) : n(n), g(n + 1) {}
 
-    void add(int u, int v, ll c, ll w) {
-        E a{v, (int) g[v].size(), c, w};
-        E b{u, (int) g[u].size(), 0, -w};
-        g[u].push_back(a);
-        g[v].push_back(b);
+    void add(int u, int v, int c, long long w) {
+        g[u].push_back({v, (int)g[v].size(), c, w});
+        g[v].push_back({u, (int)g[u].size() - 1, 0, -w});
     }
 
-    pair<ll, ll> flow(int s, int t) {
-        const ll inf = numeric_limits<ll>::max() / 4;
-        ll mf = 0, mc = 0;
-        vector<ll> d(n + 1);
-        vector<int> in(n + 1), pv(n + 1), pe(n + 1);
-        while (true) {
-            fill(d.begin(), d.end(), inf);
-            fill(in.begin(), in.end(), 0);
-            queue<int> q;
-            d[s] = 0;
-            q.push(s);
-            in[s] = 1;
-            while (!q.empty()) {
-                int u = q.front();
-                q.pop();
-                in[u] = 0;
-                for (int i = 0; i < (int) g[u].size(); i++) {
-                    E &e = g[u][i];
-                    if (!e.c || d[e.v] <= d[u] + e.w) continue;
-                    d[e.v] = d[u] + e.w;
-                    pv[e.v] = u;
-                    pe[e.v] = i;
-                    if (!in[e.v]) q.push(e.v), in[e.v] = 1;
+    pair<int, long long> flow(int s, int t) {
+        int mf = 0;
+        long long mc = 0;
+
+        const long long INF = 4e18;
+
+        vector<long long> h(n + 1);
+        vector<long long> dis(n + 1);
+        vector<int> pv(n + 1), pe(n + 1);
+
+        while (1) {
+            fill(dis.begin(), dis.end(), INF);
+            priority_queue<pair<long long,int>,
+                           vector<pair<long long,int>>,
+                           greater<pair<long long,int>>> pq;
+
+            dis[s] = 0;
+            pq.push({0, s});
+
+            while (!pq.empty()) {
+                auto [d, u] = pq.top();
+                pq.pop();
+
+                if (d != dis[u])
+                    continue;
+
+                for (int i = 0; i < (int)g[u].size(); i++) {
+                    auto &e = g[u][i];
+
+                    if (e.cap == 0)
+                        continue;
+
+                    long long nd = d + e.cost + h[u] - h[e.to];
+
+                    if (nd < dis[e.to]) {
+                        dis[e.to] = nd;
+                        pv[e.to] = u;
+                        pe[e.to] = i;
+                        pq.push({nd, e.to});
+                    }
                 }
             }
-            if (d[t] == inf) break;
-            ll f = inf;
-            for (int v = t; v != s; v = pv[v])
-                f = min(f, g[pv[v]][pe[v]].c);
-            for (int v = t; v != s; v = pv[v]) {
-                E &e = g[pv[v]][pe[v]];
-                e.c -= f;
-                g[v][e.r].c += f;
+
+            if (dis[t] == INF)
+                break;
+
+            for (int i = 1; i <= n; i++) {
+                if (dis[i] < INF)
+                    h[i] += dis[i];
             }
-            mf += f;
-            mc += f * d[t];
+
+            int aug = INT_MAX;
+
+            for (int v = t; v != s; v = pv[v]) {
+                aug = min(aug, g[pv[v]][pe[v]].cap);
+            }
+
+            for (int v = t; v != s; v = pv[v]) {
+                auto &e = g[pv[v]][pe[v]];
+                e.cap -= aug;
+                g[v][e.rev].cap += aug;
+            }
+
+            mf += aug;
+            mc += 1LL * aug * h[t];
         }
+
         return {mf, mc};
     }
 };
