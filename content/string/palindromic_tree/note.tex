@@ -1,0 +1,20 @@
+PAM 的每个非根节点对应一个不同的非空回文子串。
+依次调用 \texttt{add(c)} 加入字符，\texttt{size()} 返回当前不同回文子串的数量。
+
+\begin{itemize}
+  \item 节点 $0$ 为长度 $0$ 的偶根，节点 $1$ 为长度 $-1$ 的奇根；真实回文节点从 $2$ 开始。
+  \item \texttt{len} 为回文串长度，\texttt{fail} 指向最长的真回文后缀。
+  \item \texttt{ch[x]} 表示在当前回文串两端同时添加字符 $x$ 后的节点，$0$ 表示不存在。
+  \item \texttt{last} 表示当前整个字符串的最长回文后缀，其长度为 \texttt{tr[last].len}。
+\end{itemize}
+
+\texttt{getfail} 沿后缀链接寻找能被新字符从两端扩展的回文串；奇根保证查找终止。
+每次追加至多新建一个节点，因此长度为 $n$ 的字符串至多有 $n$ 个不同的非空回文子串。
+例如 \texttt{ababa} 的不同回文子串为 \texttt{a,b,aba,bab,ababa}，故 \texttt{size()} 为 $5$。
+
+\begin{icpcwarning}[出现次数]
+当前 \texttt{cnt} 只统计该节点作为某个前缀的最长回文后缀的次数，并非总出现次数。
+若要求每个回文串的总出现次数，建完后按节点编号从大到小遍历至 $2$，执行 \texttt{tr[tr[v].fail].cnt += tr[v].cnt}。
+后缀链接总指向更早创建的节点，因此该顺序可以正确汇总，统计允许重叠。
+原地汇总只做一次，之后不要继续 \texttt{add}；如需保留在线状态，应在计数副本上汇总。
+\end{icpcwarning}
